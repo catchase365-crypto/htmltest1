@@ -1826,8 +1826,8 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
                     });
 
                     const [owner, name] = repo.split('/');
-                    // 使用 jsdelivr 加速或原始链接
-                    const imgUrl = `https://raw.githubusercontent.com/${owner}/${name}/main/${path}`;
+                    // 使用 jsDelivr 全球加速 CDN 链接 (注意 @main 的写法)
+                    const imgUrl = `https://cdn.jsdelivr.net/gh/${owner}/${name}@main/${path}`;
                     const imgTag = `<img src="${imgUrl}" alt="${file.name}" style="max-width:100%;">`;
                     
                     insertText(imgTag);
