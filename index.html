@@ -948,6 +948,18 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             updateLineNumbers();
             updateHistoryButtons();
             updateHighlight();
+
+            // Global Keyboard Shortcuts: R (Random), D (Dark), L (Light)
+            document.addEventListener('keydown', (e) => {
+                const active = document.activeElement;
+                const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) || active.isContentEditable;
+                if (!isInput) {
+                    const key = e.key.toLowerCase();
+                    if (key === 'r') applyRandomTheme();
+                    else if (key === 'd') applyRandomTheme(true);
+                    else if (key === 'l') applyRandomTheme(false);
+                }
+            });
         };
 
         function updateHighlight() {
@@ -1266,8 +1278,8 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             localStorage.removeItem('html_editor_custom_theme');
         }
 
-        function applyRandomTheme() {
-            const isDark = Math.random() > 0.4;
+        function applyRandomTheme(forcedIsDark = null) {
+            const isDark = forcedIsDark !== null ? forcedIsDark : Math.random() > 0.4;
             const baseHue = Math.floor(Math.random() * 360);
             const uiSaturation = 10 + Math.random() * 20;
             const bgLightness = isDark ? (5 + Math.random() * 8) : (88 + Math.random() * 7);
