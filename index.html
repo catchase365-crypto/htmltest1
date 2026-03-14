@@ -22,6 +22,12 @@
             --editor-size: 15px;      
             --editor-line-height: 24px; 
             --editor-padding: 12px;
+            /* 哑光代码着色变量 */
+            --syn-comment: #6a737d;
+            --syn-tag: #d73a49;
+            --syn-attr: #6f42c1;
+            --syn-string: #032f62;
+            --syn-func: #005cc5;
         }
 
         html, body {
@@ -116,6 +122,14 @@
             padding: 0 !important;
             background: transparent !important;
         }
+
+        /* 增强亮色背景下的代码对比度与哑光感 */
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: var(--syn-comment) !important; font-style: italic; }
+        .token.tag, .token.keyword, .token.selector, .token.attr-name { color: var(--syn-tag) !important; font-weight: 500; }
+        .token.string, .token.char, .token.attr-value { color: var(--syn-string) !important; }
+        .token.function, .token.class-name { color: var(--syn-func) !important; }
+        .token.boolean, .token.number, .token.constant { color: var(--syn-attr) !important; }
+        .token.operator, .token.entity, .token.url { color: var(--text-dim) !important; }
 
         .ui-panel {
             background-color: var(--bg-ui);
@@ -830,12 +844,12 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
     <script>
         // --- 1. 配置与初始化 ---
         const themes = [
-            { name: "Deep Purple", nameCn: "深邃紫", bg: "#161122", ui: "#1e192c", text: "#e2e8f0", accent: "#a78bfa", "badge-txt": "#ffffff", border: "#352e46", dim: "#94a3b8", caret: "#ffffff" },
-            { name: "OLED Black", nameCn: "纯粹黑", bg: "#000000", ui: "#111111", text: "#e0e0e0", accent: "#ffffff", "badge-txt": "#000000", border: "#333333", dim: "#888888", caret: "#ffffff" },
-            { name: "Hacker Green", nameCn: "黑客绿", bg: "#0d1117", ui: "#161b22", text: "#4ade80", accent: "#22c55e", "badge-txt": "#ffffff", border: "#2d333b", dim: "#6e7681", caret: "#4ade80" },
-            { name: "Solar Light", nameCn: "暖阳金", bg: "#fdf6e3", ui: "#eee8d5", text: "#002b36", accent: "#b58900", "badge-txt": "#ffffff", border: "#d3af86", dim: "#586e75", caret: "#268bd2" },
-            { name: "Arctic Frost", nameCn: "极地冰", bg: "#f0f9ff", ui: "#e0f2fe", text: "#082f49", accent: "#0284c7", "badge-txt": "#ffffff", border: "#bae6fd", dim: "#0ea5e9", caret: "#0369a1" },
-            { name: "Rose Quartz", nameCn: "蔷薇粉", bg: "#fff1f2", ui: "#ffe4e6", text: "#4c0519", accent: "#e11d48", "badge-txt": "#ffffff", border: "#fecdd3", dim: "#fb7185", caret: "#be123c" }
+            { name: "Deep Purple", nameCn: "深邃紫", bg: "#161122", ui: "#1e192c", text: "#e2e8f0", accent: "#a78bfa", "badge-txt": "#ffffff", border: "#352e46", dim: "#94a3b8", caret: "#ffffff", syn: { c: "#6a737d", t: "#f97583", s: "#9ecbff", f: "#b392f0", a: "#ffab70" } },
+            { name: "OLED Black", nameCn: "纯粹黑", bg: "#000000", ui: "#111111", text: "#e0e0e0", accent: "#ffffff", "badge-txt": "#000000", border: "#333333", dim: "#888888", caret: "#ffffff", syn: { c: "#555", t: "#fff", s: "#aaa", f: "#ccc", a: "#ddd" } },
+            { name: "Hacker Green", nameCn: "黑客绿", bg: "#0d1117", ui: "#161b22", text: "#4ade80", accent: "#22c55e", "badge-txt": "#ffffff", border: "#2d333b", dim: "#6e7681", caret: "#4ade80", syn: { c: "#8b949e", t: "#ff7b72", s: "#a5d6ff", f: "#d2a8ff", a: "#ffa657" } },
+            { name: "Solar Light", nameCn: "暖阳金", bg: "#f4ecd8", ui: "#e6ddc6", text: "#433422", accent: "#b58900", "badge-txt": "#ffffff", border: "#d3af86", dim: "#736452", caret: "#268bd2", syn: { c: "#857f6f", t: "#9c0006", s: "#005a5f", f: "#0031a0", a: "#5a3000" } },
+            { name: "Arctic Frost", nameCn: "极地冰", bg: "#e6ecf0", ui: "#d8dee3", text: "#1a2a3a", accent: "#0284c7", "badge-txt": "#ffffff", border: "#b0b8bf", dim: "#4a5a6a", caret: "#0369a1", syn: { c: "#7a8a9a", t: "#a01a1a", s: "#004a4a", f: "#1a3a7a", a: "#7a4a1a" } },
+            { name: "Rose Quartz", nameCn: "蔷薇粉", bg: "#f2e8e9", ui: "#e3d8d9", text: "#4c2c2e", accent: "#e11d48", "badge-txt": "#ffffff", border: "#cfbfc1", dim: "#7c5c5e", caret: "#be123c", syn: { c: "#8c7c7d", t: "#9a1a2a", s: "#2a4a2a", f: "#2a2a7a", a: "#7a5a2a" } }
         ];
 
         const codeArea = document.getElementById('codeArea');
@@ -1238,8 +1252,13 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             const t = themes[idx];
             const root = document.documentElement;
             Object.keys(t).forEach(k => {
-                if(k !== 'name') root.style.setProperty(k === 'dim' ? '--text-dim' : (k === 'border' ? '--border' : `--${k === 'ui' ? 'bg-ui' : (k === 'text' ? 'text-main' : (k === 'bg' ? 'bg-main' : k))}`), t[k]);
+                if(k !== 'name' && k !== 'nameCn' && k !== 'syn') root.style.setProperty(k === 'dim' ? '--text-dim' : (k === 'border' ? '--border' : `--${k === 'ui' ? 'bg-ui' : (k === 'text' ? 'text-main' : (k === 'bg' ? 'bg-main' : k))}`), t[k]);
             });
+            if(t.syn) {
+                root.style.setProperty('--syn-comment', t.syn.c); root.style.setProperty('--syn-tag', t.syn.t);
+                root.style.setProperty('--syn-string', t.syn.s); root.style.setProperty('--syn-func', t.syn.f);
+                root.style.setProperty('--syn-attr', t.syn.a);
+            }
             root.style.setProperty('--line-num-bg', t.bg);
             localStorage.setItem('html_editor_theme_idx', idx);
             localStorage.removeItem('html_editor_custom_theme');
@@ -1247,18 +1266,33 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 
         function applyRandomTheme() {
             const isDark = Math.random() > 0.4;
-            const hue = Math.floor(Math.random() * 360);
+            const baseHue = Math.floor(Math.random() * 360);
             const saturation = 15 + Math.random() * 25;
             
+            // 这里的 syn 颜色逻辑：不使用白色，确保高对比度，色相分散以增加可辨别性
+            const getSynColor = (offset, lightShift = 0) => {
+                const h = (baseHue + offset) % 360;
+                const s = 65 + Math.random() * 20; // 鲜艳但不刺眼
+                const l = isDark ? (55 + lightShift) : (35 + lightShift);
+                return `hsl(${h}, ${s}%, ${l}%)`;
+            };
+
             const theme = {
-                bg: `hsl(${hue}, ${saturation}%, ${isDark ? 8 : 96}%)`,
-                ui: `hsl(${hue}, ${saturation}%, ${isDark ? 13 : 90}%)`,
-                text: `hsl(${hue}, ${saturation}%, ${isDark ? 90 : 15}%)`,
-                accent: `hsl(${(hue + 160) % 360}, 65%, ${isDark ? 70 : 45}%)`,
-                dim: `hsl(${hue}, ${saturation/2}%, ${isDark ? 60 : 45}%)`,
-                border: `hsl(${hue}, ${saturation}%, ${isDark ? 20 : 80}%)`,
+                bg: `hsl(${baseHue}, ${saturation}%, ${isDark ? 8 : 88}%)`,
+                ui: `hsl(${baseHue}, ${saturation}%, ${isDark ? 13 : 82}%)`,
+                text: `hsl(${baseHue}, ${saturation}%, ${isDark ? 90 : 25}%)`,
+                accent: `hsl(${(baseHue + 180) % 360}, 70%, ${isDark ? 65 : 45}%)`,
+                dim: `hsl(${baseHue}, ${saturation/2}%, ${isDark ? 55 : 45}%)`,
+                border: `hsl(${baseHue}, ${saturation}%, ${isDark ? 25 : 70}%)`,
                 caret: isDark ? '#ffffff' : '#000000',
-                "badge-txt": "#ffffff"
+                "badge-txt": "#ffffff",
+                syn: {
+                    c: isDark ? `hsl(${baseHue}, 10%, 50%)` : `hsl(${baseHue}, 10%, 40%)`,
+                    t: getSynColor(0),     // 标签名
+                    s: getSynColor(100),   // 字符串
+                    f: getSynColor(200),   // 函数/类名
+                    a: getSynColor(280)    // 属性名/数值
+                }
             };
 
             const root = document.documentElement;
