@@ -1153,6 +1153,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 
                 if (successCount > 0) {
                     codeArea.value = newCode;
+                    updateHighlight();
                     saveHistory(); 
                     updateLineNumbers();
                     localStorage.setItem('html_editor_ult_content', newCode);
@@ -1452,6 +1453,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             codeArea.value = codeArea.value.substring(0, start) + text + codeArea.value.substring(end);
             codeArea.setSelectionRange(start + text.length - offset, start + text.length - offset);
             codeArea.focus();
+            updateHighlight();
             updateLineNumbers();
             saveHistory();
         }
