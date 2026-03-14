@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
-    <title>HTML Editor AI v5</title>
+    <title>HTML Editor AI v5 (Fixed)</title>
+    <!-- 使用 Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         /* --- 核心 CSS 变量系统 --- */
         :root {
@@ -41,7 +41,6 @@
             height: 100%;
             overflow: hidden;
             background-color: var(--bg-main);
-            /* 更改背景: 聚宝盆 SVG 设定 */
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' opacity='0.5'%3E%3Cdefs%3E%3ClinearGradient id='gold-main' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFF3B0;stop-opacity:1' /%3E%3Cstop offset='20%25' style='stop-color:%23FFD700;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23B8860B;stop-opacity:1' /%3E%3Cstop offset='80%25' style='stop-color:%23DAA520;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23734D00;stop-opacity:1' /%3E%3C/linearGradient%3E%3ClinearGradient id='gold-shine' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFFFFF;stop-opacity:0.8' /%3E%3Cstop offset='50%25' style='stop-color:%23FFFFFF;stop-opacity:0' /%3E%3Cstop offset='100%25' style='stop-color:%23000000;stop-opacity:0.2' /%3E%3C/linearGradient%3E%3CradialGradient id='inner-shadow' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' style='stop-color:%23452E00;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23B8860B;stop-opacity:1' /%3E%3C/radialGradient%3E%3Cfilter id='glow' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeGaussianBlur stdDeviation='1.5' result='blur' /%3E%3CfeComposite in='SourceGraphic' in2='blur' operator='over' /%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='50%25' cy='60%25' r='30' fill='url(%23gold-main)' opacity='0.1' filter='blur(10px)'/%3E%3Cellipse cx='50' cy='72' rx='38' ry='12' fill='none' stroke='url(%23gold-main)' stroke-width='5' /%3E%3Cellipse cx='50' cy='72' rx='38' ry='12' fill='none' stroke='url(%23gold-shine)' stroke-width='1.5' opacity='0.6' /%3E%3Cpath d='M30 65 L70 65 L62 82 L38 82 Z' fill='url(%23gold-main)' stroke='%23734D00' stroke-width='0.5' /%3E%3Cpath d='M30 65 L38 82 L45 82 L40 65 Z' fill='url(%23gold-shine)' opacity='0.3' /%3E%3Cpath d='M20 45 C20 65 35 75 50 75 C65 75 80 65 80 45 L20 45' fill='url(%23gold-main)' stroke='%23734D00' stroke-width='0.5' /%3E%3Cpath d='M22 47 C22 62 35 72 50 72 C65 72 78 62 78 47 Z' fill='url(%23inner-shadow)' opacity='0.8' /%3E%3Cpath d='M20 45 L35 75 M80 45 L65 75 M50 75 L50 45' stroke='%23FFF3B0' stroke-width='0.2' opacity='0.5' /%3E%3Cg transform='translate(42, 38) scale(0.18)'%3E%3Cpath d='M15 40 Q15 20 50 20 Q85 20 85 40 Q85 60 50 60 Q15 60 15 40' fill='url(%23gold-main)' /%3E%3Cpath d='M0 40 Q0 70 50 70 Q100 70 100 40 L85 40 Q85 55 50 55 Q15 55 15 40 Z' fill='url(%23gold-main)' stroke='%23734D00' stroke-width='2' /%3E%3C/g%3E%3Cg transform='translate(28, 42) scale(0.14) rotate(-15)'%3E%3Cpath d='M15 40 Q15 20 50 20 Q85 20 85 40 Q85 60 50 60 Q15 60 15 40' fill='url(%23gold-main)' /%3E%3Cpath d='M0 40 Q0 70 50 70 Q100 70 100 40 L85 40 Q85 55 50 55 Q15 55 15 40 Z' fill='url(%23gold-main)' stroke='%23734D00' stroke-width='2' /%3E%3C/g%3E%3Cg transform='translate(58, 42) scale(0.14) rotate(15)'%3E%3Cpath d='M15 40 Q15 20 50 20 Q85 20 85 40 Q85 60 50 60 Q15 60 15 40' fill='url(%23gold-main)' /%3E%3Cpath d='M0 40 Q0 70 50 70 Q100 70 100 40 L85 40 Q85 55 50 55 Q15 55 15 40 Z' fill='url(%23gold-main)' stroke='%23734D00' stroke-width='2' /%3E%3C/g%3E%3Ccircle cx='45' cy='50' r='3' fill='url(%23gold-main)' stroke='%23734D00' stroke-width='0.3' /%3E%3Ccircle cx='55' cy='52' r='2.5' fill='url(%23gold-main)' stroke='%23734D00' stroke-width='0.3' /%3E%3Ccircle cx='50' cy='55' r='3.5' fill='url(%23gold-main)' stroke='%23734D00' stroke-width='0.3' /%3E%3Cpath d='M12 72 A38 12 0 0 0 88 72' fill='none' stroke='url(%23gold-main)' stroke-width='6' stroke-linecap='round' /%3E%3Cpath d='M12 72 A38 12 0 0 0 88 72' fill='none' stroke='url(%23gold-shine)' stroke-width='2' stroke-linecap='round' opacity='0.8' /%3E%3Cpath d='M15 75 L25 78' stroke='white' stroke-width='1.5' stroke-linecap='round' opacity='0.6' /%3E%3Cpath d='M75 78 L85 75' stroke='white' stroke-width='1' stroke-linecap='round' opacity='0.4' /%3E%3Cg fill='white' filter='url(%23glow)'%3E%3Cpath d='M25 35 L26 38 L29 39 L26 40 L25 43 L24 40 L21 39 L24 38 Z' /%3E%3Cpath d='M75 30 L76 33 L79 34 L76 35 L75 38 L74 35 L71 34 L74 33 Z' /%3E%3Ccircle cx='50' cy='25' r='1' /%3E%3C/g%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: center 60%;
@@ -68,53 +67,22 @@
         .hidden { display: none !important; }
         .no-bg { background-image: none !important; }
 
-        .editor-wrapper {
-            position: relative;
+        textarea#codeArea {
             flex-grow: 1;
-            overflow: hidden;
-        }
-
-        textarea#codeArea,
-        #highlighting-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            background-color: transparent;
+            color: var(--text-main);
+            border: none;
             margin: 0;
             padding: var(--editor-padding);
             font-family: var(--editor-font);
             font-size: var(--editor-size);
             line-height: var(--editor-line-height);
-            tab-size: 2;
-            white-space: pre;
-            word-wrap: normal;
-            overflow: auto;
-            border: none;
             outline: none;
-        }
-
-        textarea#codeArea {
-            background: transparent;
-            color: transparent;
-            caret-color: var(--caret);
-            z-index: 2;
             resize: none;
-            -webkit-text-fill-color: transparent;
-        }
-
-        #highlighting-content {
-            z-index: 1;
-            pointer-events: none;
-            background: transparent;
-        }
-
-        #highlighting-content code {
-            font-family: var(--editor-font) !important;
-            font-size: var(--editor-size) !important;
-            line-height: var(--editor-line-height) !important;
-            padding: 0 !important;
-            background: transparent !important;
+            white-space: pre; 
+            overflow: auto;
+            caret-color: var(--caret);
+            tab-size: 2;
         }
 
         .ui-panel {
@@ -149,12 +117,12 @@
         }
         .font-btn:hover { filter: brightness(1.2); }
 
-        .quick-bar, .no-scrollbar {
+        .quick-bar {
             overflow-x: auto;
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        .quick-bar::-webkit-scrollbar, .no-scrollbar::-webkit-scrollbar { display: none; }
+        .quick-bar::-webkit-scrollbar { display: none; }
 
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -215,23 +183,13 @@
             0%, 100% { opacity: 1; }
             50% { opacity: .5; }
         }
-
     </style>
-
-<link rel="manifest" href="manifest.json">
-<script>
-if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
 </head>
 <body class="flex flex-col h-[100dvh]">
 
-    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-30 shadow-sm relative overflow-x-auto">
-        <div class="flex items-center gap-1 shrink-0">
-            <button id="aiToggleBtn" onclick="toggleAiPanel()" class="icon-btn w-9 h-9 border-emerald-500/50 text-emerald-400 bg-emerald-900/20 overflow-hidden relative" data-title-cn="AI 助手" data-title-en="AI Assistant" title="AI Assistant">
+    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-30 shadow-sm relative">
+        <div class="flex items-center gap-1">
+            <button id="aiToggleBtn" onclick="toggleAiPanel()" class="icon-btn w-9 h-9 border-emerald-500/50 text-emerald-400 bg-emerald-900/20 overflow-hidden relative" title="AI Assistant">
                 <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 drop-shadow-[0_0_5px_rgba(0,255,127,0.4)]">
                     <defs>
                         <radialGradient id="gradTable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" stop-color="#005c29" /><stop offset="100%" stop-color="#003d1a" /></radialGradient>
@@ -255,7 +213,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
                     <line x1="38" y1="35" x2="62" y2="35" stroke="white" stroke-width="1" stroke-opacity="0.4" stroke-linecap="round"/>
                 </svg>
             </button>
-            <button id="magicWandBtn" onclick="toggleSuggestionPanel()" class="icon-btn w-9 h-9 border-indigo-500/50 text-indigo-400 bg-indigo-900/20" data-title-cn="智能建议" data-title-en="Smart Suggestions" title="Smart Suggestions">
+            <button id="magicWandBtn" onclick="toggleSuggestionPanel()" class="icon-btn w-9 h-9 border-indigo-500/50 text-indigo-400 bg-indigo-900/20" title="Smart Suggestions" aria-label="Smart Suggestions">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[1.75rem] h-[1.75rem]">
                     <defs>
                         <linearGradient id="techGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -273,7 +231,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
                 </svg>
             </button>
             <div class="w-[1px] h-6 bg-[var(--border)] mx-0.5"></div>
-            <label class="icon-btn w-9 h-9 p-0 overflow-hidden" data-title-cn="打开文件" data-title-en="Open File" title="Open File">
+            <label class="icon-btn w-9 h-9 p-0 overflow-hidden" title="Open File">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-3/5 h-3/5">
   <defs>
     <!-- Primary Red Gradient for the "Head" -->
@@ -336,8 +294,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 </svg>
                 <input type="file" id="fileInput" accept=".html,.htm,.txt" class="hidden">
             </label>
-            <button onclick="toggleThemePanel()" class="icon-btn w-9 h-9 p-0 flex items-center justify-center" data-title-cn="设置" data-title-en="Settings" title="Settings">
-                <!-- 此处调节大小: 19/25 = 76% (通过调整 class 中的 w-[76%] h-[76%] 改变比例；通过调整 viewBox 裁剪实现类似蒙版的满格效果) -->
+            <button onclick="toggleThemePanel()" class="icon-btn w-9 h-9 p-0 flex items-center justify-center" title="Settings">
                 <svg viewBox="9 9 82 82" xmlns="http://www.w3.org/2000/svg" class="w-[70%] h-[70%]">
   <defs>
     <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF5F6D"/><stop offset="100%" stop-color="#FFC371"/></linearGradient>
@@ -392,11 +349,11 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             </button>
             <div class="w-[1px] h-6 bg-[var(--border)] mx-1"></div>
             <div class="flex gap-1">
-                <button id="undoBtn" onclick="editorUndo()" class="icon-btn w-9 h-9 px-0 relative" data-title-cn="撤销" data-title-en="Undo" title="Undo">
+                <button id="undoBtn" onclick="editorUndo()" class="icon-btn w-9 h-9 px-0 relative" title="Undo">
                     <span>↩</span>
                     <span id="undoCount" class="history-badge">0</span>
                 </button>
-                <button id="redoBtn" onclick="editorRedo()" class="icon-btn w-9 h-9 px-0 relative" data-title-cn="重做" data-title-en="Redo" title="Redo">
+                <button id="redoBtn" onclick="editorRedo()" class="icon-btn w-9 h-9 px-0 relative" title="Redo">
                     <span>↪</span>
                     <span id="redoCount" class="history-badge">0</span>
                 </button>
@@ -404,8 +361,8 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             <div class="w-[1px] h-6 bg-[var(--border)] mx-1"></div>
         </div>
 
-        <div class="flex items-center gap-1 shrink-0">
-            <button onclick="handleClick(event)" onmousedown="startPress()" ontouchstart="startPress()" onmouseup="cancelPress()" onmouseleave="cancelPress()" ontouchend="cancelPress()" oncontextmenu="return false;" class="icon-btn w-9 h-9 px-0 border-green-900/50 text-green-400 bg-green-900/10" data-title-cn="运行 (长按开启实时预览)" data-title-en="Run (Hold for Live Preview)" title="Run (Hold for Live Preview)">
+        <div class="flex items-center gap-1">
+            <button id="runBtn" onmousedown="startRunPress(this)" onmouseup="endRunPress(this)" onmouseleave="cancelRunPress(this)" ontouchstart="startRunPress(this)" ontouchend="endRunPress(this)" class="icon-btn w-9 h-9 px-0 border-green-900/50 text-green-400 bg-green-900/10 transition-all duration-200" title="Click: Run Once | Long Press: Live Sync">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="w-[2.1rem] h-[2.1rem]">
   <defs>
     <linearGradient id="metal-grad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -448,7 +405,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
   <ellipse cx="50" cy="37" rx="6" ry="1.2" fill="#ffffff"></ellipse>
 </svg>
             </button>
-            <button onclick="downloadCode()" class="icon-btn w-9 h-9 px-0 border-blue-900/50 text-blue-400 bg-blue-900/10" data-title-cn="下载到本地" data-title-en="Download" title="Download">
+            <button onclick="downloadCode()" class="icon-btn w-9 h-9 px-0 border-blue-900/50 text-blue-400 bg-blue-900/10" title="Download">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="w-[2.1rem] h-[2.1rem]">
   <defs>
     <linearGradient id="walletBody" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -502,8 +459,6 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
   <path d="M20 65 Q20 60 25 60 L75 60 Q80 60 80 65 L35 85 Z" fill="url(#shine)"></path>
 </svg>
             </button>
-            
-            </button>
         </div>
     </header>
 
@@ -511,8 +466,8 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         <div class="flex justify-between items-center pb-2 border-b border-[var(--border)]">
             <div class="flex items-center gap-2">
                 <span class="text-xs">🪄</span>
-                <span class="text-sm font-bold text-amber-400" data-cn="智能建议" data-en="Smart Suggestions">智能建议</span>
-                <button onclick="clearSuggestions()" class="text-[10px] bg-red-500/10 text-red-400/70 hover:text-red-400 border border-red-500/20 px-1 rounded transition-colors ml-1" data-cn="清除" data-en="Clear">清除</button>
+                <span class="text-sm font-bold text-amber-400">Smart Suggestions</span>
+                <button onclick="clearSuggestions()" class="text-[10px] bg-red-500/10 text-red-400/70 hover:text-red-400 border border-red-500/20 px-1 rounded transition-colors ml-1">Clear</button>
             </div>
             <button onclick="toggleSuggestionPanel()" class="text-[var(--text-dim)] hover:text-[var(--text-main)]">✕</button>
         </div>
@@ -523,7 +478,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 
         <div class="flex flex-col gap-1">
             <div class="flex gap-1">
-                <input type="text" id="suggestChatInput" data-placeholder-cn="需要什么建议？(留空则自动分析)" data-placeholder-en="What suggestions? (Leave blank for auto-analysis)" placeholder="What suggestions?" class="flex-grow bg-[var(--bg-main)] text-[var(--text-main)] text-xs p-2 rounded border border-[var(--border)] focus:border-amber-500 outline-none">
+                <input type="text" id="suggestChatInput" placeholder="What suggestions? (Leave blank for auto-analysis)" class="flex-grow bg-[var(--bg-main)] text-[var(--text-main)] text-xs p-2 rounded border border-[var(--border)] focus:border-amber-500 outline-none">
                 <button id="innerSuggestBtn" onclick="getSmartSuggestions()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 rounded text-xs transition-colors">💕</button>
             </div>
         </div>
@@ -533,29 +488,29 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         <div class="flex justify-between items-center pb-2 border-b border-[var(--border)]">
             <div class="flex items-center gap-2">
                 <span class="text-xs">💕</span>
-                <span id="aiPanelTitle" class="text-sm font-bold text-purple-400" data-cn="AI 助手" data-en="AI Assistant">AI 助手</span>
-                <button onclick="showMainHelp()" class="text-[10px] bg-purple-500/10 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/20" data-cn="说明" data-en="Help">说明</button>
+                <span id="aiPanelTitle" class="text-sm font-bold text-purple-400">AI Assistant</span>
             </div>
             <button onclick="toggleAiPanel()" class="text-[var(--text-dim)] hover:text-[var(--text-main)]">✕</button>
         </div>
         
         <div class="flex flex-col gap-1">
-            <label class="text-[10px] text-[var(--text-dim)] uppercase" data-cn="API 密钥" data-en="API Key">API 密钥</label>
-            <input type="password" id="apiKeyInput" data-placeholder-cn="粘贴密钥..." data-placeholder-en="Paste Key..." placeholder="Paste Key..." class="bg-[var(--bg-main)] text-[var(--text-main)] text-xs p-2 rounded border border-[var(--border)] focus:border-purple-500 outline-none">
+            <label class="text-[10px] text-[var(--text-dim)] uppercase">API Key</label>
+            <input type="password" id="apiKeyInput" placeholder="Paste Key..." class="bg-[var(--bg-main)] text-[var(--text-main)] text-xs p-2 rounded border border-[var(--border)] focus:border-purple-500 outline-none">
         </div>
 
         <div class="flex flex-col gap-1">
-            <label class="text-[10px] text-[var(--text-dim)] uppercase" data-cn="模型" data-en="Model">模型</label>
+            <label class="text-[10px] text-[var(--text-dim)] uppercase">Model</label>
             <select id="aiModelSelect" onchange="saveAiModel()" class="bg-[var(--bg-main)] text-[var(--text-main)] text-xs p-2 rounded border border-[var(--border)] focus:border-purple-500 outline-none">
-                <option value="gemini-3.1-flash-lite-preview">gemini-3.1-flash-lite-preview</option>
+                <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+                <option value="gemini-2.5-flash">gemini-2.5-flash</option>
                 <option value="gemini-3-flash-preview">gemini-3-flash-preview</option>
-                <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview</option>
+                <option value="gemini-3-pro-preview">gemini-3-pro-preview</option>
             </select>
         </div>
 
         <div class="flex flex-col gap-1">
-            <label class="text-[10px] text-[var(--text-dim)] uppercase" data-cn="指令" data-en="Prompt">指令</label>
-            <textarea id="aiPromptInput" rows="3" data-placeholder-cn="例如：让按钮变圆并设为蓝色..." data-placeholder-en="Example: Make buttons rounded and blue..." placeholder="Example: Make buttons rounded and blue..." class="bg-[var(--bg-main)] text-[var(--text-main)] text-sm p-2 rounded border border-[var(--border)] focus:border-purple-500 outline-none resize-none"></textarea>
+            <label class="text-[10px] text-[var(--text-dim)] uppercase">Prompt</label>
+            <textarea id="aiPromptInput" rows="3" placeholder="Example: Make buttons rounded and blue..." class="bg-[var(--bg-main)] text-[var(--text-main)] text-sm p-2 rounded border border-[var(--border)] focus:border-purple-500 outline-none resize-none"></textarea>
         </div>
 
         <button onclick="callGemini()" id="aiSendBtn" class="bg-purple-600 hover:bg-purple-700 text-white text-sm py-2 rounded font-medium transition-colors flex justify-center items-center gap-2">
@@ -565,33 +520,26 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
     </div>
 
     <div id="themePanel" class="hidden absolute top-14 left-16 z-40 bg-[var(--bg-ui)] border border-[var(--border)] p-2 rounded-xl shadow-2xl w-48 max-h-[60vh] overflow-y-auto">
-        <div class="flex gap-1 mb-2">
-            <button id="langCN" onclick="setLang('cn')" class="flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-white font-bold">中文</button>
-            <button id="langEN" onclick="setLang('en')" class="flex-1 py-1 rounded text-[10px] bg-[var(--bg-main)] text-[var(--text-dim)] border border-[var(--border)]">EN</button>
-        </div>
         <button onclick="toggleLineNumbers()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
-            <span>🔢</span> <span id="lineNumToggleText" data-cn="行号 [开]" data-en="Line [ON]">行号 [开]</span>
+            <span>🔢</span> <span id="lineNumToggleText">Line [ON]</span>
         </button>
         <button onclick="toggleQuickBar()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
-            <span>&lt;/&gt;</span> <span id="quickBarToggleText" data-cn="快捷 [关]" data-en="Quick [OFF]">快捷 [关]</span>
+            <span>&lt;/&gt;</span> <span id="quickBarToggleText">Quick [OFF]</span>
         </button>
         <button onclick="toggleBackground()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
-            <span>🖼️</span> <span id="bgToggleText" data-cn="背景 [开]" data-en="BG [ON]">背景 [开]</span>
-        </button>
-        <button onclick="toggleGithubRow()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> <span id="ghRowToggleText" data-cn="GitHub [开]" data-en="GitHub [ON]">GitHub [开]</span>
+            <span>🖼️</span> <span id="bgToggleText">BG [ON]</span>
         </button>
         <div class="w-full h-[1px] bg-[var(--border)] mb-2"></div>
         <div id="themeList" class="flex flex-col gap-1"></div>
         <div class="w-full h-[1px] bg-[var(--border)] my-2"></div>
         <button onclick="applyRandomTheme()" class="w-full text-left px-3 py-2 rounded text-sm bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-bold hover:scale-[1.02] transition shadow-lg flex items-center gap-2">
-            <span>🎲</span> <span data-cn="随机样式" data-en="Random Style">随机样式</span>
+            <span>🎲</span> <span>Random Style</span>
         </button>
     </div>
 
     <div class="ui-panel p-1.5 flex flex-nowrap items-center gap-2 shrink-0 z-20">
         <div class="flex items-center flex-grow bg-[var(--bg-main)] rounded-full border border-[var(--border)] px-4 py-1.5 min-w-0">
-            <input type="text" id="searchInput" data-placeholder-cn="搜索..." data-placeholder-en="Search..." placeholder="Search..." class="bg-transparent border-none text-sm text-[var(--text-main)] focus:outline-none w-full min-w-[20px]">
+            <input type="text" id="searchInput" placeholder="Search..." class="bg-transparent border-none text-sm text-[var(--text-main)] focus:outline-none w-full min-w-[20px]">
             <span id="searchCount" class="text-[10px] font-mono text-[var(--text-dim)] whitespace-nowrap px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded-full ml-1 text-center shadow-inner opacity-0 scale-90 transition-all duration-200 pointer-events-none"></span>
         </div>
         <div class="flex items-center gap-1 shrink-0">
@@ -674,7 +622,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         </div>
         <div class="w-[1px] h-6 bg-[var(--border)] mx-1 shrink-0"></div>
         <div class="flex items-center gap-1 shrink-0">
-            <button onclick="changeFontSize(-1)" class="icon-btn w-9 h-9 p-0 flex items-center justify-center" data-title-cn="减小字号" data-title-en="Decrease Font Size" title="Decrease Font Size">
+            <button onclick="changeFontSize(-1)" class="icon-btn w-9 h-9 p-0 flex items-center justify-center" title="Decrease Font Size">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="w-3/5 h-3/5">
                   <defs>
                     <linearGradient id="gem-base-m" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -710,7 +658,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
                   <path d="M48 27 L25 78 M72 78 L52 27" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.4"></path>
                 </svg>
             </button>
-            <button onclick="changeFontSize(1)" class="icon-btn w-9 h-9 p-0 flex items-center justify-center" data-title-cn="增大字号" data-title-en="Increase Font Size" title="Increase Font Size">
+            <button onclick="changeFontSize(1)" class="icon-btn w-9 h-9 p-0 flex items-center justify-center" title="Increase Font Size">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="w-4/5 h-4/5">
                   <defs>
                     <linearGradient id="gem-base-p" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -750,45 +698,8 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         </div>
     </div>
 
-    <!-- GitHub Integration Row -->
-    <div id="githubRow" class="ui-panel p-1.5 flex flex-nowrap items-center gap-2 shrink-0 z-10 overflow-x-auto no-scrollbar">
-        <div class="flex items-center gap-1 shrink-0">
-            <button class="text-sm px-1" title="GitHub Settings" onclick="document.getElementById('ghPanel').classList.toggle('hidden')">
-            <svg class="w-5 h-5 fill-current text-[var(--text-main)]" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-        </button>
-            <div id="ghPanel" class="hidden absolute bottom-10 left-2 z-50 bg-[var(--bg-ui)] border border-[var(--border)] p-3 rounded-xl shadow-2xl w-[200px]">
-                <label class="text-[10px] text-[var(--text-dim)] uppercase">GitHub Token</label>
-                <input type="password" id="ghToken" placeholder="ghp_..." class="w-full bg-[var(--bg-main)] text-[var(--text-main)] text-xs p-2 mt-1 rounded border border-[var(--border)] focus:border-blue-500 outline-none">
-                <button onclick="document.getElementById('ghPanel').classList.add('hidden')" class="w-full mt-2 bg-blue-600 text-white text-xs py-1.5 rounded" data-cn="保存" data-en="Save">保存</button>
-                <button id="ghHelpBtn" onclick="showGhHelp()" class="w-full mt-1 bg-gray-700 text-white text-[10px] py-1 rounded" data-cn="查看按钮功能说明" data-en="View Button Functions">查看按钮功能说明</button>
-            </div>
-        </div>
-        <div class="w-[1px] h-6 bg-[var(--border)] shrink-0"></div>
-        <div class="flex items-center gap-1 shrink-0">
-            <select id="repoSelect" onchange="updateRepoLink()" class="bg-[var(--bg-main)] text-[var(--text-main)] text-[10px] p-1.5 rounded border border-[var(--border)] max-w-[100px] outline-none">
-                <option value="">Repos...</option>
-            </select>
-            <button onclick="if(confirm(currentLang==='cn'?'确定刷新仓库列表吗？':'Refresh repo list?')) ghListRepos()" class="icon-btn p-1 text-xs" title="Refresh Repo List">🔄</button>
-            <button onclick="if(confirm(currentLang==='cn'?'确定从仓库拉取index.html吗？此操作会覆盖当前编辑器内容。':'Pull index.html from repo? This will overwrite current code.')) ghDownloadIndex()" class="icon-btn p-1 text-xs" title="Load Repo index.html to Editor">⤵️</button>
-            <button onclick="if(confirm(currentLang==='cn'?'确定同步当前代码到GitHub吗？':'Sync current code to GitHub?')) ghUpdateRepo()" class="icon-btn p-1 text-xs" title="Overwrite Repo index.html with Current Code">⤴️</button>
-            <button onclick="ghOpenPages()" class="icon-btn p-1 text-xs" title="Open GitHub Pages">🌐</button>
-            <button id="ghRepoLinkBtn" onclick="ghOpenRepo()" class="icon-btn p-1 text-xs" title="Open Repo">📂</button>
-            <button onclick="ghDownloadToPC()" class="icon-btn p-1 text-xs" title="Download Repo index.html to PC">💾</button>
-            <button onclick="if(confirm(currentLang==='cn'?'确定重命名此仓库吗？':'Rename this repository?')) ghRenameRepo()" class="icon-btn p-1 text-xs" title="Rename Repo">✏️</button>
-            <button onclick="if(confirm(currentLang==='cn'?'危险操作：确定永久删除此仓库吗？':'DANGER: Permanently delete this repository?')) ghDeleteRepo()" class="icon-btn p-1 text-xs text-red-400" title="Delete Repo">​🚮</button>
-        </div>
-        <div class="w-[1px] h-6 bg-[var(--border)] shrink-0"></div>
-        <div class="flex items-center gap-1 flex-grow min-w-0">
-            <button onclick="showLogModal()" class="icon-btn p-1.5 text-xs" title="View Logs">📜</button>
-            <input type="text" id="newRepoName" data-placeholder-cn="新仓库名..." data-placeholder-en="New Repo..." placeholder="New Repo..." class="bg-[var(--bg-main)] text-[var(--text-main)] text-[10px] p-1.5 rounded border border-[var(--border)] flex-grow min-w-[60px] outline-none">
-            <button onclick="ghCreateRepo()" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] px-2 py-1.5 rounded transition-colors whitespace-nowrap" data-cn="🚀 创建" data-en="🚀 Create">🚀 创建</button>
-        </div>
-    </div>
-
     <div id="quickBar" class="ui-panel p-1 shrink-0 quick-bar whitespace-nowrap flex items-center gap-2 px-2 h-10 border-none hidden">
-        <span class="text-[10px] text-[var(--text-dim)] uppercase tracking-wider mr-1" data-cn="快捷栏:" data-en="Quick:">快捷栏:</span>
+        <span class="text-[10px] text-[var(--text-dim)] uppercase tracking-wider mr-1">Quick:</span>
         <button onclick="insertText('<div class=\x22\x22></div>', 12)" class="icon-btn text-xs py-1">&lt;div&gt;</button>
         <button onclick="insertText('<p></p>', 4)" class="icon-btn text-xs py-1">&lt;p&gt;</button>
         <button onclick="insertText('<a href=\x22\x22></a>', 9)" class="icon-btn text-xs py-1">&lt;a&gt;</button>
@@ -805,69 +716,52 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 
     <main class="editor-container">
         <div id="lineNumbers" class="line-numbers">1</div>
-        <div class="editor-wrapper">
-            <pre id="highlighting-content" aria-hidden="true"><code class="language-markup" id="highlighting-code"></code></pre>
-            <textarea id="codeArea" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Type HTML here..."></textarea>
-        </div>
+        <textarea id="codeArea" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Type HTML here..."></textarea>
     </main>
 
     <script>
-        // --- 1. 配置与初始化 ---
-        const themes = [
-            { name: "Deep Purple", nameCn: "深邃紫", bg: "#161122", ui: "#1e192c", text: "#e2e8f0", accent: "#a78bfa", "badge-txt": "#ffffff", border: "#352e46", dim: "#94a3b8", caret: "#ffffff" },
-            { name: "OLED Black", nameCn: "纯粹黑", bg: "#000000", ui: "#111111", text: "#e0e0e0", accent: "#ffffff", "badge-txt": "#000000", border: "#333333", dim: "#888888", caret: "#ffffff" },
-            { name: "Hacker Green", nameCn: "黑客绿", bg: "#0d1117", ui: "#161b22", text: "#4ade80", accent: "#22c55e", "badge-txt": "#ffffff", border: "#2d333b", dim: "#6e7681", caret: "#4ade80" },
-            { name: "Solar Light", nameCn: "暖阳金", bg: "#fdf6e3", ui: "#eee8d5", text: "#002b36", accent: "#b58900", "badge-txt": "#ffffff", border: "#d3af86", dim: "#586e75", caret: "#268bd2" },
-            { name: "Arctic Frost", nameCn: "极地冰", bg: "#f0f9ff", ui: "#e0f2fe", text: "#082f49", accent: "#0284c7", "badge-txt": "#ffffff", border: "#bae6fd", dim: "#0ea5e9", caret: "#0369a1" },
-            { name: "Rose Quartz", nameCn: "蔷薇粉", bg: "#fff1f2", ui: "#ffe4e6", text: "#4c0519", accent: "#e11d48", "badge-txt": "#ffffff", border: "#fecdd3", dim: "#fb7185", caret: "#be123c" }
-        ];
-
-        const codeArea = document.getElementById('codeArea');
-        const highlightingCode = document.getElementById('highlighting-code');
-        const highlightingContent = document.getElementById('highlighting-content');
-        const lineNumbers = document.getElementById('lineNumbers');
-        const themePanel = document.getElementById('themePanel');
-        const themeList = document.getElementById('themeList');
-        const searchInput = document.getElementById('searchInput');
-        const quickBar = document.getElementById('quickBar');
-        let currentLang = 'cn';
-        
-        function setLang(lang) {
-            currentLang = lang;
-            document.getElementById('langCN').className = lang === 'cn' ? 'flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-white font-bold' : 'flex-1 py-1 rounded text-[10px] bg-[var(--bg-main)] text-[var(--text-dim)] border border-[var(--border)]';
-            document.getElementById('langEN').className = lang === 'en' ? 'flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-white font-bold' : 'flex-1 py-1 rounded text-[10px] bg-[var(--bg-main)] text-[var(--text-dim)] border border-[var(--border)]';
-            
-            document.querySelectorAll('[data-cn]').forEach(el => { el.textContent = lang === 'cn' ? el.dataset.cn : el.dataset.en; });
-            document.querySelectorAll('[data-title-cn]').forEach(el => { el.title = lang === 'cn' ? el.dataset.titleCn : el.dataset.titleEn; });
-            document.querySelectorAll('[data-placeholder-cn]').forEach(el => { el.placeholder = lang === 'cn' ? el.dataset.placeholderCn : el.dataset.placeholderEn; });
-            
-            // Special logic for theme text and placeholder
-            document.getElementById('codeArea').placeholder = lang === 'cn' ? "在此输入代码..." : "Type HTML here...";
-            initThemes();
-        }
-
-        // AI 相关 DOM
-        const aiPanel = document.getElementById('aiPanel');
-        const suggestionPanel = document.getElementById('suggestionPanel');
-        const apiKeyInput = document.getElementById('apiKeyInput');
-        const aiPromptInput = document.getElementById('aiPromptInput');
-        const aiSendBtn = document.getElementById('aiSendBtn');
-        const aiStatus = document.getElementById('aiStatus');
-        const aiModelSelect = document.getElementById('aiModelSelect');
-        const suggestChatInput = document.getElementById('suggestChatInput');
-
+        // 声明全局变量，但先不赋值，防止在DOM加载前获取
+        let codeArea, lineNumbers, themePanel, themeList, searchInput, quickBar;
+        let aiPanel, suggestionPanel, apiKeyInput, aiPromptInput, aiSendBtn, aiStatus, aiModelSelect, suggestChatInput;
         let currentFileName = "index";
         let historyStack = [];
         let historyIndex = -1;
         const MAX_HISTORY = 100;
-        let debounceTimer, previewWindow = null;
+        let debounceTimer;
+        
+        // 搜索变量
+        let searchMatches = [], currentMatchIdx = -1;
 
-        window.onload = function() {
+        // --- DOMContentLoaded 监听器 (核心修复：确保DOM就绪后再执行) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化全局变量
+            codeArea = document.getElementById('codeArea');
+            lineNumbers = document.getElementById('lineNumbers');
+            themePanel = document.getElementById('themePanel');
+            themeList = document.getElementById('themeList');
+            searchInput = document.getElementById('searchInput');
+            quickBar = document.getElementById('quickBar');
+            
+            // AI 相关 DOM
+            aiPanel = document.getElementById('aiPanel');
+            suggestionPanel = document.getElementById('suggestionPanel');
+            apiKeyInput = document.getElementById('apiKeyInput');
+            aiPromptInput = document.getElementById('aiPromptInput');
+            aiSendBtn = document.getElementById('aiSendBtn');
+            aiStatus = document.getElementById('aiStatus');
+            aiModelSelect = document.getElementById('aiModelSelect');
+            suggestChatInput = document.getElementById('suggestChatInput');
+
+            // 执行初始化逻辑
             initThemes(); 
             renderAiSuggestions();
-            const saved = localStorage.getItem('html_editor_ult_content');
-            if (saved) { codeArea.value = saved; saveHistory(); } else { saveHistory(); }
             
+            if (codeArea) {
+                const saved = localStorage.getItem('html_editor_ult_content');
+                if (saved) { codeArea.value = saved; saveHistory(); } else { saveHistory(); }
+            }
+            
+            // 恢复主题设置
             const savedThemeIdx = localStorage.getItem('html_editor_theme_idx');
             const savedCustom = localStorage.getItem('html_editor_custom_theme');
             if (savedCustom) {
@@ -889,67 +783,93 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             const savedSize = localStorage.getItem('html_editor_font_size');
             if (savedSize) applyFontSize(parseInt(savedSize));
 
-            // 恢复 Key
-            const savedKey = localStorage.getItem('gemini_api_key');
-            if(savedKey) apiKeyInput.value = savedKey;
-            // 恢复 AI 模型
-            const savedModel = localStorage.getItem('gemini_selected_model');
-            if (savedModel && Array.from(aiModelSelect.options).some(o => o.value === savedModel)) {
-                aiModelSelect.value = savedModel;
-            } else {
-                aiModelSelect.value = "gemini-3-flash-preview";
+            // 恢复 Key 和 AI 设置
+            if(apiKeyInput) {
+                const savedKey = localStorage.getItem('gemini_api_key');
+                if(savedKey) apiKeyInput.value = savedKey;
+            }
+            if(aiModelSelect) {
+                const savedModel = localStorage.getItem('gemini_selected_model');
+                if(savedModel) aiModelSelect.value = savedModel;
             }
 
             // 恢复 UI 状态
             if (localStorage.getItem('html_editor_linenum_visible') === 'false') toggleLineNumbers();
             if (localStorage.getItem('html_editor_quickbar_visible') === 'true') toggleQuickBar();
             if (localStorage.getItem('html_editor_bg_visible') === 'false') toggleBackground();
-            if (localStorage.getItem('html_editor_ghrow_visible') === 'false') toggleGithubRow();
-            
-            // GitHub Initialization
-            const savedToken = localStorage.getItem('gh_token');
-            if (savedToken) { 
-                document.getElementById('ghToken').value = savedToken;
-                ghListRepos();
-            }
             
             updateLineNumbers();
             updateHistoryButtons();
-            updateHighlight();
-        };
 
-        function updateHighlight() {
-            let text = codeArea.value;
-            if (text[text.length - 1] === "\n") text += " ";
-            highlightingCode.textContent = text;
-            Prism.highlightElement(highlightingCode);
-        }
+            // 绑定事件监听器 (放在这里最安全)
+            if (codeArea) {
+                codeArea.addEventListener('scroll', () => {
+                    if (lineNumbers && !lineNumbers.classList.contains('hidden')) {
+                        lineNumbers.scrollTop = codeArea.scrollTop;
+                    }
+                });
+                
+                codeArea.addEventListener('input', () => {
+                    updateLineNumbers();
+                    localStorage.setItem('html_editor_ult_content', codeArea.value);
+                    if (typeof isLiveSyncActive !== 'undefined' && isLiveSyncActive) broadcastCode();
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(saveHistory, 500);
+                });
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function() { performSearch(this.value, false); });
+                searchInput.addEventListener('keydown', function(e) { if(e.key === 'Enter') { e.preventDefault(); navigateSearch(1); }});
+            }
+
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if(!file) return;
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        if(codeArea) {
+                            codeArea.value = e.target.result;
+                            updateLineNumbers();
+                            saveHistory();
+                        }
+                    };
+                    reader.readAsText(file);
+                });
+            }
+        });
 
         // --- 2. AI 核心逻辑 (Gemini 2.5) ---
         function toggleAiPanel() {
+            if(!aiPanel) return;
             aiPanel.classList.toggle('hidden');
             if (!aiPanel.classList.contains('hidden')) {
-                suggestionPanel.classList.add('hidden');
-                aiPromptInput.focus();
+                if(suggestionPanel) suggestionPanel.classList.add('hidden');
+                if(aiPromptInput) aiPromptInput.focus();
             }
         }
 
         function toggleSuggestionPanel() {
+            if(!suggestionPanel) return;
             suggestionPanel.classList.toggle('hidden');
             if (!suggestionPanel.classList.contains('hidden')) {
-                aiPanel.classList.add('hidden');
-                suggestChatInput.focus();
+                if(aiPanel) aiPanel.classList.add('hidden');
+                if(suggestChatInput) suggestChatInput.focus();
             }
         }
 
         function clearSuggestions() {
-            document.getElementById('aiSuggestions').innerHTML = '';
+            const el = document.getElementById('aiSuggestions');
+            if(el) el.innerHTML = '';
             localStorage.removeItem('html_editor_last_suggestions');
             if (aiStatus) aiStatus.textContent = "Suggestions cleared.";
         }
 
         function renderAiSuggestions(suggestions = []) {
             const container = document.getElementById('aiSuggestions');
+            if(!container) return;
             if (suggestions.length > 0) {
                 localStorage.setItem('html_editor_last_suggestions', JSON.stringify(suggestions));
             } else {
@@ -976,10 +896,10 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             const btn = document.getElementById('innerSuggestBtn');
             const wandBtn = document.getElementById('magicWandBtn');
             const originalBtnHtml = btn.innerHTML;
-            const originalWandHtml = wandBtn.innerHTML;
+            const originalWandHtml = wandBtn ? wandBtn.innerHTML : '';
             
             btn.innerHTML = `<span class="animate-spin inline-block text-[10px]">⏳</span>`;
-            wandBtn.innerHTML = `<span class="animate-spin inline-block">⏳</span>`;
+            if(wandBtn) wandBtn.innerHTML = `<span class="animate-spin inline-block">⏳</span>`;
             btn.disabled = true;
 
             let systemMsg = "Analyze this HTML/CSS code and provide 4 specific, short improvement suggestions. Return ONLY a JSON array of objects: [{\"zh\": \"中文建议\", \"en\": \"English suggestion\"}].";
@@ -1008,25 +928,26 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
                 aiStatus.className = "text-xs text-purple-400";
             } catch (err) {
                 console.error(err);
-                document.getElementById('aiSuggestions').innerHTML = '<div class="text-xs text-red-400">Failed to generate.</div>';
+                const el = document.getElementById('aiSuggestions');
+                if(el) el.innerHTML = '<div class="text-xs text-red-400">Failed to generate.</div>';
                 aiStatus.textContent = "Error: " + err.message;
             } finally {
                 btn.innerHTML = originalBtnHtml;
-                if (typeof originalWandHtml !== 'undefined') wandBtn.innerHTML = originalWandHtml;
+                if (wandBtn && typeof originalWandHtml !== 'undefined') wandBtn.innerHTML = originalWandHtml;
                 btn.disabled = false;
             }
         }
 
         function applyAiSuggestion(text) {
-            aiPromptInput.value = text;
-            callGemini();
+            if(aiPromptInput) {
+                aiPromptInput.value = text;
+                callGemini();
+            }
         }
 
         function saveAiModel() {
             localStorage.setItem('gemini_selected_model', aiModelSelect.value);
         }
-
-
 
         async function callGemini() {
             const key = apiKeyInput.value.trim();
@@ -1042,11 +963,11 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             // UI Loading 状态
             aiSendBtn.disabled = true;
             aiSendBtn.innerHTML = `<span class="ai-loading">...</span>`;
-            document.querySelector('#aiToggleBtn svg').classList.add('gem-loading');
+            const toggleIcon = document.querySelector('#aiToggleBtn svg');
+            if(toggleIcon) toggleIcon.classList.add('gem-loading');
             aiStatus.textContent = `AI: Thinking (${model})...`;
             aiStatus.className = "text-xs text-purple-400 animate-pulse";
 
-            // 构造 Prompt：要求 JSON Diff 格式
             const systemInstruction = `You are an expert HTML coder. 
             TASK: The user wants to modify the provided HTML code. 
             CONSTRAINT 1: Do NOT return the full code. 
@@ -1059,7 +980,6 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             const userMessage = `My Code:\n\n${code}\n\nModification Request:\n${prompt}`;
 
             try {
-                // 调用 Gemini API
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
                 
                 const response = await fetch(url, {
@@ -1078,28 +998,22 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
                 
                 const rawText = data.candidates[0].content.parts[0].text;
                 
-                // 解析 JSON
                 const jsonMatch = rawText.match(/```json\s*([\s\S]*?)\s*```/) || rawText.match(/```\s*([\s\S]*?)\s*```/);
                 let changes = [];
                 if (jsonMatch) {
                     changes = JSON.parse(jsonMatch[1]);
                 } else {
-                    // 尝试直接解析
                     changes = JSON.parse(rawText);
                 }
 
                 if (!Array.isArray(changes)) throw new Error("AI 返回格式错误");
 
-                // 应用修改
                 let newCode = codeArea.value;
                 let successCount = 0;
                 
                 changes.forEach(change => {
                     if (newCode.includes(change.find)) {
                         newCode = newCode.replace(change.find, change.replace);
-                        successCount++;
-                    } else if (newCode.trim() === "") {
-                        newCode = change.replace;
                         successCount++;
                     } else {
                         console.warn("未找到代码块:", change.find);
@@ -1112,7 +1026,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
                     updateLineNumbers();
                     localStorage.setItem('html_editor_ult_content', newCode);
                     aiStatus.textContent = `Done: ${successCount} changes! ✅`;
-                    aiStatus.className = "text-xs text-green-400"; addLog(`AI Success: ${successCount} changes`, changes);
+                    aiStatus.className = "text-xs text-green-400";
                     aiPromptInput.value = ''; 
                 } else {
                     aiStatus.textContent = "No changes matched. Be more specific. ❌";
@@ -1126,53 +1040,39 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             } finally {
                 aiSendBtn.disabled = false;
                 aiSendBtn.innerHTML = `<span>🚀</span>`;
-                document.querySelector('#aiToggleBtn svg').classList.remove('gem-loading');
+                if(toggleIcon) toggleIcon.classList.remove('gem-loading');
             }
         }
 
         // --- 3. 基础编辑器功能 (保留原有逻辑) ---
         function toggleLineNumbers() {
+            if(!lineNumbers) return;
             lineNumbers.classList.toggle('hidden');
             const hidden = lineNumbers.classList.contains('hidden');
-            const el = document.getElementById('lineNumToggleText');
-            el.dataset.cn = hidden ? "行号 [关]" : "行号 [开]";
-            el.dataset.en = hidden ? "Line [OFF]" : "Line [ON]";
-            el.textContent = currentLang === 'cn' ? el.dataset.cn : el.dataset.en;
+            const toggleText = document.getElementById('lineNumToggleText');
+            if(toggleText) toggleText.textContent = hidden ? "Line [OFF]" : "Line [ON]";
             localStorage.setItem('html_editor_linenum_visible', !hidden);
             updateLineNumbers();
         }
 
         function toggleQuickBar() {
+            if(!quickBar) return;
             quickBar.classList.toggle('hidden');
             const hidden = quickBar.classList.contains('hidden');
-            const el = document.getElementById('quickBarToggleText');
-            el.dataset.cn = hidden ? "快捷 [关]" : "快捷 [开]";
-            el.dataset.en = hidden ? "Quick [OFF]" : "Quick [ON]";
-            el.textContent = currentLang === 'cn' ? el.dataset.cn : el.dataset.en;
+            const toggleText = document.getElementById('quickBarToggleText');
+            if(toggleText) toggleText.textContent = hidden ? "Quick [OFF]" : "Quick [ON]";
             localStorage.setItem('html_editor_quickbar_visible', !hidden);
             setTimeout(updateLineNumbers, 0);
         }
 
         function toggleBackground() {
             const container = document.querySelector('.editor-container');
+            if(!container) return;
             container.classList.toggle('no-bg');
             const isHidden = container.classList.contains('no-bg');
-            const el = document.getElementById('bgToggleText');
-            el.dataset.cn = isHidden ? "背景 [关]" : "背景 [开]";
-            el.dataset.en = isHidden ? "BG [OFF]" : "BG [ON]";
-            el.textContent = currentLang === 'cn' ? el.dataset.cn : el.dataset.en;
+            const toggleText = document.getElementById('bgToggleText');
+            if(toggleText) toggleText.textContent = isHidden ? "BG [OFF]" : "BG [ON]";
             localStorage.setItem('html_editor_bg_visible', !isHidden);
-        }
-
-        function toggleGithubRow() {
-            const row = document.getElementById('githubRow');
-            row.classList.toggle('hidden');
-            const isHidden = row.classList.contains('hidden');
-            const el = document.getElementById('ghRowToggleText');
-            el.dataset.cn = isHidden ? "GitHub [关]" : "GitHub [开]";
-            el.dataset.en = isHidden ? "GitHub [OFF]" : "GitHub [ON]";
-            el.textContent = currentLang === 'cn' ? el.dataset.cn : el.dataset.en;
-            localStorage.setItem('html_editor_ghrow_visible', !isHidden);
         }
 
         function changeFontSize(delta) {
@@ -1192,19 +1092,15 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         }
 
         const updateLineNumbers = () => {
+            if (!lineNumbers || !codeArea) return;
             if (lineNumbers.classList.contains('hidden')) return;
             const lines = codeArea.value.split('\n').length;
             const minLines = Math.floor(window.innerHeight / 24); 
             lineNumbers.textContent = Array.from({length: Math.max(lines, minLines)}, (_, i) => i + 1).join('\n');
         };
 
-        codeArea.addEventListener('scroll', () => {
-            if (!lineNumbers.classList.contains('hidden')) lineNumbers.scrollTop = codeArea.scrollTop;
-            highlightingContent.scrollTop = codeArea.scrollTop;
-            highlightingContent.scrollLeft = codeArea.scrollLeft;
-        });
-
         function initThemes() {
+            if(!themeList) return;
             themeList.innerHTML = '';
             themes.forEach((t, idx) => {
                 const btn = document.createElement('button');
@@ -1212,7 +1108,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
                 btn.style.backgroundColor = t.bg;
                 btn.style.color = t.text;
                 btn.style.border = `1px solid ${t.border || '#374151'}`;
-                btn.innerHTML = `<span>${currentLang === 'cn' ? t.nameCn : t.name}</span><div class="w-3 h-3 rounded-full" style="background:${t.accent}"></div>`;
+                btn.innerHTML = `<span>${t.name}</span><div class="w-3 h-3 rounded-full" style="background:${t.accent}"></div>`;
                 btn.onclick = () => { applyTheme(idx); themePanel.classList.add('hidden'); };
                 themeList.appendChild(btn);
             });
@@ -1258,12 +1154,15 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             
             localStorage.setItem('html_editor_custom_theme', JSON.stringify(theme));
             localStorage.removeItem('html_editor_theme_idx');
-            themePanel.classList.add('hidden');
+            if(themePanel) themePanel.classList.add('hidden');
         }
 
-        function toggleThemePanel() { themePanel.classList.toggle('hidden'); }
+        function toggleThemePanel() { 
+            if(themePanel) themePanel.classList.toggle('hidden'); 
+        }
 
         function saveHistory() {
+            if(!codeArea) return;
             const val = codeArea.value;
             if (historyIndex > -1 && historyStack[historyIndex] === val) return;
             historyStack = historyStack.slice(0, historyIndex + 1);
@@ -1278,38 +1177,36 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             const uCount = document.getElementById('undoCount');
             const rCount = document.getElementById('redoCount');
             
+            if(!uBtn || !rBtn) return;
+
             const undoSteps = historyIndex;
             const redoSteps = historyStack.length - 1 - historyIndex;
 
             uBtn.style.opacity = undoSteps > 0 ? "1" : "0.3";
             uBtn.style.filter = undoSteps > 0 ? "none" : "grayscale(1)";
             uBtn.style.pointerEvents = undoSteps > 0 ? "auto" : "none";
-            uCount.textContent = undoSteps;
-            uCount.style.display = undoSteps > 0 ? "block" : "none";
+            if(uCount) {
+                uCount.textContent = undoSteps;
+                uCount.style.display = undoSteps > 0 ? "block" : "none";
+            }
 
             rBtn.style.opacity = redoSteps > 0 ? "1" : "0.3";
             rBtn.style.filter = redoSteps > 0 ? "none" : "grayscale(1)";
             rBtn.style.pointerEvents = redoSteps > 0 ? "auto" : "none";
-            rCount.textContent = redoSteps;
-            rCount.style.display = redoSteps > 0 ? "block" : "none";
+            if(rCount) {
+                rCount.textContent = redoSteps;
+                rCount.style.display = redoSteps > 0 ? "block" : "none";
+            }
         }
-
-        codeArea.addEventListener('input', () => {
-            updateHighlight();
-            updateLineNumbers();
-            localStorage.setItem('html_editor_ult_content', codeArea.value);
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(saveHistory, 500);
-            updatePreview();
-        });
 
         function editorUndo() {
             if (historyIndex > 0) {
                 historyIndex--;
-                codeArea.value = historyStack[historyIndex];
-                updateHighlight();
-                updateLineNumbers();
-                localStorage.setItem('html_editor_ult_content', codeArea.value);
+                if(codeArea) {
+                    codeArea.value = historyStack[historyIndex];
+                    updateLineNumbers();
+                    localStorage.setItem('html_editor_ult_content', codeArea.value);
+                }
                 updateHistoryButtons();
             }
         }
@@ -1317,35 +1214,36 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         function editorRedo() {
             if (historyIndex < historyStack.length - 1) {
                 historyIndex++;
-                codeArea.value = historyStack[historyIndex];
-                updateHighlight();
-                updateLineNumbers();
-                localStorage.setItem('html_editor_ult_content', codeArea.value);
+                if(codeArea) {
+                    codeArea.value = historyStack[historyIndex];
+                    updateLineNumbers();
+                    localStorage.setItem('html_editor_ult_content', codeArea.value);
+                }
                 updateHistoryButtons();
             }
         }
-
-        // 搜索功能
-        let searchMatches = [], currentMatchIdx = -1;
-        searchInput.addEventListener('input', function() { performSearch(this.value, false); });
-        searchInput.addEventListener('keydown', function(e) { if(e.key === 'Enter') { e.preventDefault(); navigateSearch(1); }});
 
         function performSearch(term, jump) {
             searchMatches = [];
             if(!jump) currentMatchIdx = -1;
             const countSpan = document.getElementById('searchCount');
             if(!term) {
-                countSpan.textContent = '';
-                countSpan.classList.add('opacity-0', 'scale-90');
+                if(countSpan) {
+                    countSpan.textContent = '';
+                    countSpan.classList.add('opacity-0', 'scale-90');
+                }
                 return;
             }
+            if(!codeArea) return;
             const val = codeArea.value.toLowerCase();
             let pos = val.indexOf(term.toLowerCase());
             while(pos !== -1) { searchMatches.push(pos); pos = val.indexOf(term.toLowerCase(), pos + 1); }
             
-            countSpan.classList.remove('opacity-0', 'scale-90');
-            countSpan.textContent = searchMatches.length > 0 ? `${currentMatchIdx === -1 ? '?' : currentMatchIdx + 1}/${searchMatches.length}` : '0/0';
-            countSpan.style.color = searchMatches.length > 0 ? 'var(--accent)' : '#ef4444';
+            if(countSpan) {
+                countSpan.classList.remove('opacity-0', 'scale-90');
+                countSpan.textContent = searchMatches.length > 0 ? `${currentMatchIdx === -1 ? '?' : currentMatchIdx + 1}/${searchMatches.length}` : '0/0';
+                countSpan.style.color = searchMatches.length > 0 ? 'var(--accent)' : '#ef4444';
+            }
             if(jump && searchMatches.length > 0) navigateSearch(1);
         }
 
@@ -1353,26 +1251,18 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             if(searchMatches.length === 0) return;
             currentMatchIdx = (currentMatchIdx + dir + searchMatches.length) % searchMatches.length;
             const idx = searchMatches[currentMatchIdx];
-            codeArea.focus();
-            codeArea.setSelectionRange(idx, idx + searchInput.value.length);
-            const lh = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--editor-line-height'));
-            codeArea.scrollTop = (codeArea.value.substr(0, idx).split('\n').length * lh) - (codeArea.clientHeight / 2);
-            document.getElementById('searchCount').textContent = `${currentMatchIdx + 1}/${searchMatches.length}`;
+            if(codeArea && searchInput) {
+                codeArea.focus();
+                codeArea.setSelectionRange(idx, idx + searchInput.value.length);
+                const lh = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--editor-line-height'));
+                codeArea.scrollTop = (codeArea.value.substr(0, idx).split('\n').length * lh) - (codeArea.clientHeight / 2);
+                const countSpan = document.getElementById('searchCount');
+                if(countSpan) countSpan.textContent = `${currentMatchIdx + 1}/${searchMatches.length}`;
+            }
         }
 
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                codeArea.value = e.target.result;
-                updateLineNumbers();
-                saveHistory();
-            };
-            reader.readAsText(file);
-        });
-
         function insertText(text, offset=0) {
+            if(!codeArea) return;
             const start = codeArea.selectionStart, end = codeArea.selectionEnd;
             codeArea.value = codeArea.value.substring(0, start) + text + codeArea.value.substring(end);
             codeArea.setSelectionRange(start + text.length - offset, start + text.length - offset);
@@ -1381,37 +1271,14 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             saveHistory();
         }
 
-        let pressTimer;
-        let ignoreClick = false;
-
-        function startPress() {
-            ignoreClick = false;
-            pressTimer = setTimeout(() => {
-                ignoreClick = true;
-                toggleLivePreview();
-                if(navigator.vibrate) navigator.vibrate(50);
-            }, 600);
-        }
-
-        function cancelPress() {
-            clearTimeout(pressTimer);
-        }
-
-        function handleClick(e) {
-            if (ignoreClick) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-            }
-            runCode();
-        }
-
         function runCode() {
+            if(!codeArea) return;
             const w = window.open("", "_blank");
             if(w) { w.document.write(codeArea.value); w.document.close(); } else alert("Allow Popups!");
         }
 
         function downloadCode() {
+            if(!codeArea) return;
             const blob = new Blob([codeArea.value], {type:'text/html'});
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
@@ -1419,306 +1286,93 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
 
-        function toggleLivePreview() {
-            if (!previewWindow || previewWindow.closed) {
-                previewWindow = window.open("", "EditorLivePreview");
-            }
-            updatePreview();
-            previewWindow.focus();
-        }
+        // --- [2] 实时预览 & 长按逻辑 ---
+        const syncChannel = new BroadcastChannel('html_editor_sync');
+        let isLiveSyncActive = false;
 
-        function updatePreview() {
-            if (previewWindow && !previewWindow.closed) {
-                const doc = previewWindow.document;
-                doc.open();
-                doc.write(codeArea.value);
-                doc.close();
+        function broadcastCode() {
+            if(codeArea) {
+                syncChannel.postMessage({ type: 'update', code: codeArea.value });
             }
         }
 
-        // --- GitHub Helper Logic ---
-        function showGhHelp() {
-            const isCn = currentLang === 'cn';
-            const items = [
-                { icon: '🔄', cn: '刷新: 获取仓库列表', en: 'Refresh: Fetch repo list' },
-                { icon: '⤵️', cn: '拉取: 加载线上文件到编辑器', en: 'Pull: Load online file to editor' },
-                { icon: '⤴️', cn: '同步: 将当前代码同步至仓库', en: 'Sync: Push code to repository' },
-                { icon: '🌐', cn: '网页: 打开 GitHub Pages 预览', en: 'Pages: Open GitHub Pages' },
-                { icon: '📂', cn: '仓库: 前往 GitHub 仓库页面', en: 'Repo: Visit GitHub repository' },
-                { icon: '💾', cn: '下载: 保存文件到本地', en: 'Download: Save to local PC' },
-                { icon: '✏️', cn: '重命名: 修改仓库名称', en: 'Rename: Change repository name' },
-                { icon: '​🚮', cn: '删除: 永久移除此仓库', en: 'Delete: Permanently remove repo' }
-            ];
-
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm';
-            modal.onclick = () => modal.remove();
+        function openLivePreview() {
+            // 新策略：直接打开空白弹窗并注入接收器逻辑
+            // 这比依赖 URL 参数更稳定，尤其是在 Blob/Data URL 环境下
+            const width = window.screen.width / 2;
+            const height = window.screen.height;
+            const left = window.screen.availLeft + width;
             
-            modal.innerHTML = `
-                <div class="bg-[var(--bg-ui)] border border-[var(--border)] rounded-2xl p-5 max-w-sm w-full shadow-2xl animate-in fade-in zoom-in duration-200" onclick="event.stopPropagation()">
-                    <div class="flex justify-between items-center mb-5 border-b border-[var(--border)] pb-2">
-                        <h3 class="font-bold text-[var(--accent)] text-base">${isCn ? 'GitHub 功能说明' : 'GitHub Guide'}</h3>
-                        <button onclick="this.closest('.fixed').remove()" class="text-[var(--text-dim)] hover:text-white transition-colors">✕</button>
-                    </div>
-                    <div class="flex flex-col gap-3">
-                        ${items.map((item, i) => `
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 flex items-center justify-center bg-[var(--bg-main)] rounded-lg border border-[var(--border)] text-sm">${item.icon}</div>
-                                <div class="text-xs text-[var(--text-main)]">${isCn ? item.cn : item.en}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
+            // 1. 打开空白窗口
+            const win = window.open("", "LivePreviewReceiver", `width=${width},height=${height},left=${left},top=0`);
+            
+            if (!win) {
+                alert("请允许弹出窗口以使用实时预览功能！");
+                return;
+            }
+
+            // 2. 注入接收端代码
+            const receiverHTML = `
+                <!DOCTYPE html>
+                <html style="height:100%;margin:0;">
+                <head><title>Live Preview</title></head>
+                <body style="height:100%;margin:0;overflow:hidden;background:#fff;">
+                    <iframe id="preview-frame" style="width:100%;height:100%;border:0;"></iframe>
+                    <script>
+                        const frame = document.getElementById('preview-frame');
+                        const ch = new BroadcastChannel('html_editor_sync');
+                        ch.onmessage = (e) => {
+                            if(e.data.type === 'update') {
+                                const blob = new Blob([e.data.code], {type: 'text/html'});
+                                frame.src = URL.createObjectURL(blob);
+                            }
+                        };
+                        // 告知主窗口已就绪
+                        setTimeout(() => ch.postMessage({type: 'ready'}), 100);
+                    <\/script>
+                </body>
+                </html>
             `;
-            document.body.appendChild(modal);
-        }
-        async function ghFetch(path, options = {}) {
-            const token = document.getElementById('ghToken').value.trim();
-            if (!token) throw new Error("Token required");
-            localStorage.setItem('gh_token', token);
             
-            const headers = {
-                'Authorization': `token ${token}`,
-                'Accept': 'application/vnd.github.v3+json',
-                ...options.headers
+            win.document.open();
+            win.document.write(receiverHTML);
+            win.document.close();
+
+            // 3. 启动同步
+            isLiveSyncActive = true;
+            syncChannel.onmessage = (e) => {
+                if(e.data.type === 'ready') broadcastCode();
             };
-            const response = await fetch(`https://api.github.com${path}`, { ...options, headers });
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.message || "Request failed");
-            }
-            return response.status === 204 ? null : response.json();
-        }
-
-        async function ghListRepos() {
-            try {
-                // 增加随机时间戳参数 t 绕过 GitHub API 或浏览器的潜在缓存，确保数据实时性
-                const repos = await ghFetch(`/user/repos?per_page=100&sort=updated&t=${Date.now()}`);
-                const select = document.getElementById('repoSelect');
-                select.innerHTML = '<option value="">Repos...</option>' + 
-                    repos.map(r => `<option value="${r.full_name}" data-url="${r.html_url}">${r.name}</option>`).join('');
-            } catch (e) { alert("GitHub: " + e.message); }
-        }
-
-        function updateRepoLink() {
-            const select = document.getElementById('repoSelect');
-            const opt = select.options[select.selectedIndex];
-            if (opt) {
-                document.getElementById('ghRepoLinkBtn').dataset.url = opt.dataset.url || "#";
-            } else {
-                document.getElementById('ghRepoLinkBtn').dataset.url = "#";
-            }
-        }
-
-        function ghOpenRepo() {
-            const url = document.getElementById('ghRepoLinkBtn').dataset.url;
-            if (url && url !== "#") window.open(url, '_blank');
-        }
-
-        async function ghUpdateRepo() {
-            const repo = document.getElementById('repoSelect').value;
-            if (!repo) return alert("Select a repo");
-            try {
-                let sha = "";
-                try {
-                    const file = await ghFetch(`/repos/${repo}/contents/index.html`);
-                    sha = file.sha;
-                } catch(e) {}
-                
-                await ghFetch(`/repos/${repo}/contents/index.html`, {
-                    method: 'PUT',
-                    body: JSON.stringify({
-                        message: "Update via HTML Editor AI",
-                        content: btoa(unescape(encodeURIComponent(codeArea.value))),
-                        sha: sha
-                    })
-                });
-                alert("index.html synced successfully! 🌐"); addLog(`Synced: ${repo}`);
-            } catch (e) { alert("Sync Error: " + e.message); }
-        }
-
-        async function ghDownloadIndex() {
-            const repo = document.getElementById('repoSelect').value;
-            if (!repo) return alert("Select a repo");
-            try {
-                const file = await ghFetch(`/repos/${repo}/contents/index.html`);
-                codeArea.value = decodeURIComponent(escape(atob(file.content)));
-                saveHistory();
-                updateLineNumbers();
-                alert("Repo content loaded to editor! ⤵️");
-            } catch (e) { alert("Load Error: " + e.message); }
-        }
-
-        function ghOpenPages() {
-            const repo = document.getElementById('repoSelect').value;
-            if (!repo) return alert("Select a repo");
-            const [owner, name] = repo.split('/');
-            window.open(`https://${owner}.github.io/${name}/`, '_blank');
-        }
-
-        function showMainHelp() {
-            const isCn = currentLang === 'cn';
-            const items = [
-                { sel: '#aiToggleBtn svg', cn: 'AI 助手: 呼出AI助手，根据指令修改代码', en: 'AI Assistant: Code modifications via prompt' },
-                { sel: '#magicWandBtn svg', cn: '智能建议: 智能分析当前代码并提供改进建议', en: 'Smart Suggest: Code analysis and improvements' },
-                { sel: 'label[data-title-cn="打开文件"] svg', cn: '打开文件: 导入本地HTML文件', en: 'Open File: Import local HTML file' },
-                { sel: 'button[onclick="toggleThemePanel()"] svg', cn: '设置: 切换主题、语言及界面开关', en: 'Settings: Themes, Language & UI Toggles' },
-                { html: '<span class="text-lg">↩↪</span>', cn: '撤销/重做: 历史操作回溯', en: 'Undo/Redo: Navigate edit history' },
-                { sel: 'button[onclick="handleClick(event)"] svg', cn: '运行: 点击运行，长按开启实时预览', en: 'Run: Click to run, hold for live sync' },
-                { sel: 'button[onclick="downloadCode()"] svg', cn: '下载: 将代码保存为HTML文件到本地', en: 'Download: Save current code as local HTML' }
-            ];
-
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm';
-            modal.onclick = () => modal.remove();
             
-            const content = `
-                <div class="bg-[var(--bg-ui)] border border-[var(--border)] rounded-2xl p-5 max-w-sm w-full shadow-2xl animate-in fade-in zoom-in duration-200" onclick="event.stopPropagation()">
-                    <div class="flex justify-between items-center mb-5 border-b border-[var(--border)] pb-2">
-                        <h3 class="font-bold text-[var(--accent)] text-base">${isCn ? '主界面按钮说明' : 'Interface Guide'}</h3>
-                        <button onclick="this.closest('.fixed').remove()" class="text-[var(--text-dim)] hover:text-white transition-colors">✕</button>
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        ${items.map((item, i) => {
-                            let iconHtml = item.html || document.querySelector(item.sel).outerHTML;
-                            return `
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 shrink-0 flex items-center justify-center bg-[var(--bg-main)] rounded-xl border border-[var(--border)] shadow-inner">
-                                    <div class="w-7 h-7 flex items-center justify-center">${iconHtml}</div>
-                                </div>
-                                <div class="text-xs leading-relaxed text-[var(--text-main)] flex-grow">
-                                    <span class="font-bold text-[var(--accent)]">${i+1}. </span>
-                                    ${isCn ? item.cn : item.en}
-                                </div>
-                            </div>`;
-                        }).join('')}
-                    </div>
-                </div>
-            `;
-            modal.innerHTML = content;
-            document.body.appendChild(modal);
+            const btn = document.getElementById('runBtn');
+            if(btn) btn.classList.add('animate-pulse', 'border-green-400');
+            setTimeout(() => broadcastCode(), 500);
         }
 
-        async function ghDownloadToPC() {
-            const repo = document.getElementById('repoSelect').value;
-            if (!repo) return alert("Select a repo");
-            try {
-                const file = await ghFetch(`/repos/${repo}/contents/index.html`);
-                const content = decodeURIComponent(escape(atob(file.content)));
-                const blob = new Blob([content], {type:'text/html'});
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = `index_${repo.replace('/','_')}.html`;
-                a.click();
-            } catch (e) { alert("Download Error: " + e.message); }
-        }
+        let pressTimer;
+        let isLongPress = false;
 
-        async function ghCreateRepo() {
-            const name = document.getElementById('newRepoName').value.trim();
-            if (!name) return alert(currentLang === 'cn' ? "请输入仓库名" : "Enter a repo name");
-            const msg = currentLang === 'cn' ? `确定要创建新仓库: ${name} 吗？` : `Create new repository: ${name}?`;
-            if (!confirm(msg)) return;
-            try {
-                // 1. 创建仓库
-                const repoData = await ghFetch('/user/repos', {
-                    method: 'POST',
-                    body: JSON.stringify({ name, auto_init: true })
-                });
-                const fullName = repoData.full_name;
+        window.startRunPress = function(btn) {
+            isLongPress = false;
+            btn.style.transform = "scale(0.9)";
+            pressTimer = setTimeout(() => {
+                isLongPress = true;
+                btn.style.transform = "scale(1.1)";
+                if(navigator.vibrate) navigator.vibrate(50);
+                openLivePreview();
+            }, 600);
+        };
 
-                // 等待 GitHub 初始化分支
-                await new Promise(r => setTimeout(r, 2000));
+        window.endRunPress = function(btn) {
+            clearTimeout(pressTimer);
+            btn.style.transform = "scale(1)";
+            if (!isLongPress) runCode();
+        };
 
-                // 2. 初始同步 index.html
-                await ghFetch(`/repos/${fullName}/contents/index.html`, {
-                    method: 'PUT',
-                    body: JSON.stringify({
-                        message: "Initial deployment via HTML Editor AI",
-                        content: btoa(unescape(encodeURIComponent(codeArea.value)))
-                    })
-                });
-
-                // 3. 开启 Pages 托管
-                try {
-                    await ghFetch(`/repos/${fullName}/pages`, {
-                        method: 'POST',
-                        body: JSON.stringify({ source: { branch: 'main', path: '/' } }),
-                        headers: { 'Accept': 'application/vnd.github.switcheroo-preview+json' }
-                    });
-                } catch (pageErr) { console.warn("Pages activation info:", pageErr); }
-
-                // 4. 刷新列表与 UI
-                await ghListRepos();
-                addLog(`Created Repo: ${name}`);
-                document.getElementById('repoSelect').value = fullName;
-                updateRepoLink();
-                
-                alert(currentLang === 'cn' ? 
-                    "🚀 新仓库已创建并自动开启 Pages 托管！请等待 1 分钟左右部署完成，即可点击 🌐 访问。" : 
-                    "🚀 New repo created and Pages enabled! Wait ~1 min for deployment, then click 🌐 to visit.");
-            } catch (e) { alert("Create Error: " + e.message); }
-        }
-
-        function addLog(msg, details = null) {
-            let logs = JSON.parse(localStorage.getItem('editor_logs') || '[]');
-            const timestamp = new Date().toLocaleTimeString();
-            logs.unshift({ time: timestamp, msg, details });
-            if(logs.length > 50) logs.pop();
-            localStorage.setItem('editor_logs', JSON.stringify(logs));
-        }
-
-        function showLogModal() {
-            let modal = document.getElementById('logPanel');
-            if (modal) { modal.classList.toggle('hidden'); return; }
-            
-            modal = document.createElement('div');
-            modal.id = 'logPanel';
-            modal.className = 'absolute top-14 left-2 z-50 bg-[var(--bg-ui)] border border-[var(--border)] p-3 rounded-xl shadow-2xl w-[90%] max-w-[400px] max-h-[60vh] flex flex-col gap-3';
-            const isCn = currentLang === 'cn';
-            const logs = JSON.parse(localStorage.getItem('editor_logs') || '[]');
-            
-            modal.innerHTML = `
-                <div class="flex justify-between items-center pb-2 border-b border-[var(--border)]">
-                    <h3 class="font-bold text-[var(--accent)] text-sm" data-cn="操作日志" data-en="Action Logs">${isCn ? '操作日志' : 'Action Logs'}</h3>
-                    <div class="flex gap-2">
-                        <button onclick="localStorage.removeItem('editor_logs');this.closest('#logPanel').remove();showLogModal()" class="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded" data-cn="清除" data-en="Clear">${isCn ? '清除' : 'Clear'}</button>
-                        <button onclick="this.closest('#logPanel').classList.add('hidden')" class="text-[var(--text-dim)]">✕</button>
-                    </div>
-                </div>
-                <div class="flex-grow overflow-y-auto text-[10px] font-mono flex flex-col gap-2">
-                    ${logs.map(l => `
-                        <details class="border border-[var(--border)] rounded p-2 bg-[var(--bg-main)]">
-                            <summary class="cursor-pointer text-[var(--text-main)] truncate">[${l.time}] ${l.msg}</summary>
-                            <pre class="mt-1 p-1 bg-black/30 rounded overflow-x-auto text-[var(--accent)]">${JSON.stringify(l.details, null, 2) || 'No details'}</pre>
-                        </details>`).join('') || `<span data-cn="无日志" data-en="No logs">${isCn ? '无日志' : 'No logs'}</span>`}
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-
-        async function ghDeleteRepo() {
-            const repo = document.getElementById('repoSelect').value;
-            if (!repo) return;
-            try {
-                await ghFetch(`/repos/${repo}`, { method: 'DELETE' });
-                ghListRepos();
-                alert("Deleted. ​🚮");
-            } catch (e) { alert("Delete Error: " + e.message); }
-        }
-
-        async function ghRenameRepo() {
-            const repo = document.getElementById('repoSelect').value;
-            const newName = prompt("Enter new name:");
-            if (!repo || !newName) return;
-            try {
-                await ghFetch(`/repos/${repo}`, {
-                    method: 'PATCH',
-                    body: JSON.stringify({ name: newName })
-                });
-                ghListRepos();
-                alert("Renamed! ✏️");
-            } catch (e) { alert("Rename Error: " + e.message); }
-        }
+        window.cancelRunPress = function(btn) {
+            clearTimeout(pressTimer);
+            btn.style.transform = "scale(1)";
+        };
     </script>
 </body>
 </html>
