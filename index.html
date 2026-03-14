@@ -30,6 +30,7 @@
             width: 100%;
             margin: 0;
             overflow: hidden;
+            position: fixed; /* 防止移动端浏览器在键盘弹出时滚动整个页面本体 */
             background-color: var(--bg-main);
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -118,6 +119,7 @@
             background: transparent;
             /* 修复移动端渲染层级导致的不可见问题 */
             transform: translateZ(0);
+            contain: content; /* 限制渲染范围，提高移动端滚动性能并防止布局溢出 */
         }
 
         #highlighting-content code {
@@ -250,7 +252,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 </head>
 <body class="flex flex-col h-screen h-[100dvh]">
 
-    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-50 shadow-sm sticky top-0">
+    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-50 shadow-sm">
         <div class="flex items-center gap-1">
             <button id="aiToggleBtn" onclick="toggleAiPanel()" class="icon-btn w-9 h-9 border-emerald-500/50 text-emerald-400 bg-emerald-900/20 overflow-hidden relative" data-title-cn="AI 助手" data-title-en="AI Assistant" title="AI Assistant">
                 <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 drop-shadow-[0_0_5px_rgba(0,255,127,0.4)]">
@@ -1393,7 +1395,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             if(searchMatches.length === 0) return;
             currentMatchIdx = (currentMatchIdx + dir + searchMatches.length) % searchMatches.length;
             const idx = searchMatches[currentMatchIdx];
-            codeArea.focus();
+            codeArea.focus({ preventScroll: true });
             codeArea.setSelectionRange(idx, idx + searchInput.value.length);
             const lh = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--editor-line-height'));
             codeArea.scrollTop = (codeArea.value.substr(0, idx).split('\n').length * lh) - (codeArea.clientHeight / 2);
