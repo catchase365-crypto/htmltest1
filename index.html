@@ -59,6 +59,7 @@
             text-align: right;
             padding: var(--editor-padding) 6px var(--editor-padding) 0;
             font-family: var(--editor-font);
+            font-weight: bold;
             font-size: var(--editor-size);
             line-height: var(--editor-line-height);
             border-right: 1px solid var(--border);
@@ -89,6 +90,7 @@
             margin: 0;
             padding: var(--editor-padding);
             font-family: var(--editor-font);
+            font-weight: bold;
             font-size: var(--editor-size);
             line-height: var(--editor-line-height);
             tab-size: 2;
@@ -248,7 +250,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 </head>
 <body class="flex flex-col h-screen h-[100dvh]">
 
-    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-30 shadow-sm relative">
+    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-50 shadow-sm sticky top-0">
         <div class="flex items-center gap-1">
             <button id="aiToggleBtn" onclick="toggleAiPanel()" class="icon-btn w-9 h-9 border-emerald-500/50 text-emerald-400 bg-emerald-900/20 overflow-hidden relative" data-title-cn="AI 助手" data-title-en="AI Assistant" title="AI Assistant">
                 <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 drop-shadow-[0_0_5px_rgba(0,255,127,0.4)]">
