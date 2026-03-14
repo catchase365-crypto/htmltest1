@@ -1269,48 +1269,52 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         function applyRandomTheme() {
             const isDark = Math.random() > 0.4;
             const baseHue = Math.floor(Math.random() * 360);
-            const saturation = 15 + Math.random() * 25;
+            const uiSaturation = 10 + Math.random() * 20;
+            const bgLightness = isDark ? (5 + Math.random() * 8) : (88 + Math.random() * 7);
+
+            /** 
+             * 动态对比度算法：
+             * 根据背景明度自动计算代码高亮明度。深色背景下使用高明度(75-90%)，浅色背景下使用低明度(20-35%)。
+             * 利用三元色关系(Triadic)分配不同标记符的色相，确保高辨识度。
+             */
+            const synL = isDark ? (75 + Math.random() * 15) : (25 + Math.random() * 10);
+            const synS = 75 + Math.random() * 20;
             
-            // 这里的 syn 颜色逻辑：不使用白色，确保高对比度，色相分散以增加可辨别性
-            const getSynColor = (offset, lightShift = 0) => {
-                const h = (baseHue + offset) % 360;
-                const s = 65 + Math.random() * 20; // 鲜艳但不刺眼
-                const l = isDark ? (55 + lightShift) : (35 + lightShift);
-                return `hsl(${h}, ${s}%, ${l}%)`;
-            };
+            const getSynColor = (hOffset) => `hsl(${(baseHue + hOffset) % 360}, ${synS}%, ${synL}%)`;
 
             const theme = {
-                bg: `hsl(${baseHue}, ${saturation}%, ${isDark ? 8 : 88}%)`,
-                ui: `hsl(${baseHue}, ${saturation}%, ${isDark ? 13 : 82}%)`,
-                text: `hsl(${baseHue}, ${saturation}%, ${isDark ? 90 : 25}%)`,
-                accent: `hsl(${baseHue}, 85%, ${isDark ? 65 : 25}%)`,
-                dim: `hsl(${baseHue}, ${saturation/2}%, ${isDark ? 55 : 45}%)`,
-                border: `hsl(${baseHue}, ${saturation}%, ${isDark ? 25 : 70}%)`,
+                bg: `hsl(${baseHue}, ${uiSaturation}%, ${bgLightness}%)`,
+                ui: `hsl(${baseHue}, ${uiSaturation}%, ${isDark ? bgLightness + 6 : bgLightness - 8}%)`,
+                text: `hsl(${baseHue}, ${uiSaturation/2}%, ${isDark ? 92 : 15}%)`,
+                accent: `hsl(${baseHue}, 85%, ${isDark ? 70 : 40}%)`,
+                dim: `hsl(${baseHue}, 15%, ${isDark ? 60 : 45}%)`,
+                border: `hsl(${baseHue}, ${uiSaturation}%, ${isDark ? bgLightness + 15 : bgLightness - 15}%)`,
                 caret: isDark ? '#ffffff' : '#000000',
                 "badge-txt": "#ffffff",
                 syn: {
-                    c: isDark ? `hsl(${baseHue}, 10%, 50%)` : `hsl(${baseHue}, 10%, 40%)`,
-                    t: getSynColor(0),     // 标签名
-                    s: getSynColor(100),   // 字符串
-                    f: getSynColor(200),   // 函数/类名
-                    a: getSynColor(280)    // 属性名/数值
+                    c: `hsl(${baseHue}, 10%, 50%)`,    // 注释 (中性)
+                    t: getSynColor(0),               // 标签 (主色)
+                    s: getSynColor(130),             // 字符串 (三元色1)
+                    f: getSynColor(240),             // 函数 (三元色2)
+                    a: getSynColor(50)               // 属性 (类比色)
                 }
             };
 
             const root = document.documentElement;
-            root.style.setProperty('--bg-main', theme.bg);
-            root.style.setProperty('--bg-ui', theme.ui);
-            root.style.setProperty('--text-main', theme.text);
-            root.style.setProperty('--accent', theme.accent);
-            root.style.setProperty('--text-dim', theme.dim);
-            root.style.setProperty('--border', theme.border);
-            root.style.setProperty('--caret', theme.caret);
-            root.style.setProperty('--badge-txt', theme["badge-txt"]);
-            root.style.setProperty('--line-num-bg', theme.bg);
+            const props = {
+                '--bg-main': theme.bg, '--bg-ui': theme.ui, '--text-main': theme.text,
+                '--accent': theme.accent, '--text-dim': theme.dim, '--border': theme.border,
+                '--caret': theme.caret, '--badge-txt': theme["badge-txt"], '--line-num-bg': theme.bg,
+                '--syn-comment': theme.syn.c, '--syn-tag': theme.syn.t, '--syn-string': theme.syn.s,
+                '--syn-func': theme.syn.f, '--syn-attr': theme.syn.a
+            };
+            
+            Object.entries(props).forEach(([k, v]) => root.style.setProperty(k, v));
             
             localStorage.setItem('html_editor_custom_theme', JSON.stringify(theme));
             localStorage.removeItem('html_editor_theme_idx');
             themePanel.classList.add('hidden');
+            addLog("Applied Algorithmic Theme", { hue: baseHue, dark: isDark });
         }
 
         function toggleThemePanel() { themePanel.classList.toggle('hidden'); }
