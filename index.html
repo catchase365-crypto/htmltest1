@@ -26,11 +26,9 @@
 
         html, body {
             height: 100%;
-            height: -webkit-fill-available;
             width: 100%;
             margin: 0;
             overflow: hidden;
-            position: fixed; /* 防止移动端浏览器在键盘弹出时滚动整个页面本体 */
             background-color: var(--bg-main);
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -40,8 +38,7 @@
         .editor-container {
             position: relative;
             display: flex;
-            flex: 1 1 0%;
-            min-height: 0;
+            height: 100%;
             overflow: hidden;
             background-color: var(--bg-main);
             /* 更改背景: 聚宝盆 SVG 设定 */
@@ -60,7 +57,6 @@
             text-align: right;
             padding: var(--editor-padding) 6px var(--editor-padding) 0;
             font-family: var(--editor-font);
-            font-weight: bold;
             font-size: var(--editor-size);
             line-height: var(--editor-line-height);
             border-right: 1px solid var(--border);
@@ -74,9 +70,7 @@
 
         .editor-wrapper {
             position: relative;
-            flex: 1 1 auto;
-            min-width: 0;
-            min-height: 0;
+            flex-grow: 1;
             overflow: hidden;
         }
 
@@ -87,11 +81,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            box-sizing: border-box;
             margin: 0;
             padding: var(--editor-padding);
             font-family: var(--editor-font);
-            font-weight: bold;
             font-size: var(--editor-size);
             line-height: var(--editor-line-height);
             tab-size: 2;
@@ -104,22 +96,17 @@
 
         textarea#codeArea {
             background: transparent;
-            color: var(--text-main);
+            color: transparent;
             caret-color: var(--caret);
-            z-index: 5;
+            z-index: 2;
             resize: none;
             -webkit-text-fill-color: transparent;
-            /* 确保在某些移动端浏览器下点击区域生效 */
-            display: block;
         }
 
         #highlighting-content {
             z-index: 1;
             pointer-events: none;
             background: transparent;
-            /* 修复移动端渲染层级导致的不可见问题 */
-            transform: translateZ(0);
-            contain: content; /* 限制渲染范围，提高移动端滚动性能并防止布局溢出 */
         }
 
         #highlighting-content code {
@@ -193,16 +180,6 @@
             display: none;
         }
 
-        /* --- 亮色模式代码高亮覆盖 --- */
-        body.light-mode #highlighting-content { color: #2d3748; }
-        body.light-mode .token.punctuation { color: #4a5568; }
-        body.light-mode .token.tag, body.light-mode .token.attr-name, body.light-mode .token.namespace, body.light-mode .token.deleted { color: #e53e3e; }
-        body.light-mode .token.function { color: #805ad5; }
-        body.light-mode .token.string, body.light-mode .token.char, body.light-mode .token.attr-value, body.light-mode .token.regex, body.light-mode .token.variable { color: #38a169; }
-        body.light-mode .token.comment, body.light-mode .token.prolog, body.light-mode .token.doctype, body.light-mode .token.cdata { color: #a0aec0; }
-        body.light-mode .token.keyword, body.light-mode .token.selector, body.light-mode .token.important, body.light-mode .token.atrule { color: #3182ce; }
-        body.light-mode .token.operator, body.light-mode .token.entity, body.light-mode .token.url { color: #d69e2e; }
-
         /* --- AI 面板特定样式 --- */
         .ai-loading {
             animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -250,10 +227,10 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
 </head>
-<body class="flex flex-col h-screen h-[100dvh]">
+<body class="flex flex-col h-[100dvh]">
 
-    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-50 shadow-sm">
-        <div class="flex items-center gap-1">
+    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-30 shadow-sm relative overflow-x-auto">
+        <div class="flex items-center gap-1 shrink-0">
             <button id="aiToggleBtn" onclick="toggleAiPanel()" class="icon-btn w-9 h-9 border-emerald-500/50 text-emerald-400 bg-emerald-900/20 overflow-hidden relative" data-title-cn="AI 助手" data-title-en="AI Assistant" title="AI Assistant">
                 <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 drop-shadow-[0_0_5px_rgba(0,255,127,0.4)]">
                     <defs>
@@ -427,7 +404,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             <div class="w-[1px] h-6 bg-[var(--border)] mx-1"></div>
         </div>
 
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-1 shrink-0">
             <button onclick="handleClick(event)" onmousedown="startPress()" ontouchstart="startPress()" onmouseup="cancelPress()" onmouseleave="cancelPress()" ontouchend="cancelPress()" oncontextmenu="return false;" class="icon-btn w-9 h-9 px-0 border-green-900/50 text-green-400 bg-green-900/10" data-title-cn="运行 (长按开启实时预览)" data-title-en="Run (Hold for Live Preview)" title="Run (Hold for Live Preview)">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="w-[2.1rem] h-[2.1rem]">
   <defs>
@@ -895,9 +872,6 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             const savedCustom = localStorage.getItem('html_editor_custom_theme');
             if (savedCustom) {
                 const theme = JSON.parse(savedCustom);
-                // 简单判断背景亮度以决定是否开启亮色高亮模式
-                const isLight = theme.bg.includes('96%') || (theme.bg.startsWith('#') && parseInt(theme.bg.slice(1,3), 16) > 200);
-                document.body.classList.toggle('light-mode', isLight);
                 const root = document.documentElement;
                 root.style.setProperty('--bg-main', theme.bg);
                 root.style.setProperty('--bg-ui', theme.ui);
@@ -945,23 +919,10 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         };
 
         function updateHighlight() {
-            try {
-                let text = codeArea.value;
-                if (text[text.length - 1] === "\n") text += " ";
-                highlightingCode.textContent = text;
-                if (window.Prism) {
-                    Prism.highlightElement(highlightingCode);
-                    // 成功高亮时使 textarea 文字透明，显示高亮层
-                    codeArea.style.webkitTextFillColor = 'transparent';
-                } else {
-                    // Prism 加载失败时强制显示文字，防止白屏
-                    codeArea.style.webkitTextFillColor = 'var(--text-main)';
-                    console.warn("Prism not loaded");
-                }
-            } catch (e) {
-                console.error("Highlighting error:", e);
-                codeArea.style.webkitTextFillColor = 'var(--text-main)';
-            }
+            let text = codeArea.value;
+            if (text[text.length - 1] === "\n") text += " ";
+            highlightingCode.textContent = text;
+            Prism.highlightElement(highlightingCode);
         }
 
         // --- 2. AI 核心逻辑 (Gemini 2.5) ---
@@ -1259,8 +1220,6 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 
         function applyTheme(idx) {
             const t = themes[idx];
-            // 检查是否为亮色主题 (索引 3, 4, 5 是预设的亮色主题)
-            document.body.classList.toggle('light-mode', idx >= 3);
             const root = document.documentElement;
             Object.keys(t).forEach(k => {
                 if(k !== 'name') root.style.setProperty(k === 'dim' ? '--text-dim' : (k === 'border' ? '--border' : `--${k === 'ui' ? 'bg-ui' : (k === 'text' ? 'text-main' : (k === 'bg' ? 'bg-main' : k))}`), t[k]);
@@ -1296,7 +1255,6 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             root.style.setProperty('--caret', theme.caret);
             root.style.setProperty('--badge-txt', theme["badge-txt"]);
             root.style.setProperty('--line-num-bg', theme.bg);
-            document.body.classList.toggle('light-mode', !isDark);
             
             localStorage.setItem('html_editor_custom_theme', JSON.stringify(theme));
             localStorage.removeItem('html_editor_theme_idx');
@@ -1395,7 +1353,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             if(searchMatches.length === 0) return;
             currentMatchIdx = (currentMatchIdx + dir + searchMatches.length) % searchMatches.length;
             const idx = searchMatches[currentMatchIdx];
-            codeArea.focus({ preventScroll: true });
+            codeArea.focus();
             codeArea.setSelectionRange(idx, idx + searchInput.value.length);
             const lh = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--editor-line-height'));
             codeArea.scrollTop = (codeArea.value.substr(0, idx).split('\n').length * lh) - (codeArea.clientHeight / 2);
