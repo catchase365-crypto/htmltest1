@@ -1781,5 +1781,8 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             } catch (e) { alert("Rename Error: " + e.message); }
         }
     </script>
+    <!-- Bottom Corner Theme Triggers -->
+    <div onclick="applyRandomTheme(true)" style="position: fixed; bottom: 0; left: 0; width: 44px; height: 44px; z-index: 9999; cursor: pointer; background: transparent;" title="Force Dark Theme"></div>
+    <div onclick="applyRandomTheme(false)" style="position: fixed; bottom: 0; right: 0; width: 44px; height: 44px; z-index: 9999; cursor: pointer; background: transparent;" title="Force Light Theme"></div>
 </body>
 </html>
