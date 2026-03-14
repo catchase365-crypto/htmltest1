@@ -1601,8 +1601,11 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             try {
                 const file = await ghFetch(`/repos/${repo}/contents/index.html`);
                 codeArea.value = decodeURIComponent(escape(atob(file.content)));
-                saveHistory();
+                codeArea.scrollTop = 0;
+                codeArea.scrollLeft = 0;
+                updateHighlight();
                 updateLineNumbers();
+                saveHistory();
                 alert("Repo content loaded to editor! ⤵️");
             } catch (e) { alert("Load Error: " + e.message); }
         }
