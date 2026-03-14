@@ -825,6 +825,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         <button onclick="insertText('<p></p>', 4)" class="icon-btn text-xs py-1">&lt;p&gt;</button>
         <button onclick="insertText('<a href=\x22\x22></a>', 9)" class="icon-btn text-xs py-1">&lt;a&gt;</button>
         <button onclick="insertText('img src=\x22\x22', 9)" class="icon-btn text-xs py-1">img</button>
+        <button onclick="triggerImageUpload()" class="icon-btn text-xs py-1 border-amber-500/30" data-title-cn="上传图片到图床" data-title-en="Upload to Image Bed">🖼️ Bed</button>
         <span class="w-[1px] h-4 bg-[var(--border)] mx-1"></span>
         <button onclick="insertText('=')" class="icon-btn text-xs w-6 px-0">=</button>
         <button onclick="insertText('\x22')" class="icon-btn text-xs w-6 px-0">"</button>
@@ -1362,6 +1363,22 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             rCount.style.display = redoSteps > 0 ? "block" : "none";
         }
 
+        codeArea.addEventListener('paste', (e) => {
+            const item = Array.from(e.clipboardData.items).find(x => x.type.startsWith('image'));
+            if (item) {
+                e.preventDefault();
+                handleImageFile(item.getAsFile());
+            }
+        });
+
+        codeArea.addEventListener('drop', (e) => {
+            const file = Array.from(e.dataTransfer.files).find(x => x.type.startsWith('image'));
+            if (file) {
+                e.preventDefault();
+                handleImageFile(file);
+            }
+        });
+
         codeArea.addEventListener('input', () => {
             updateHighlight();
             updateLineNumbers();
@@ -1765,6 +1782,61 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
                 ghListRepos();
                 alert("Deleted. ​🚮");
             } catch (e) { alert("Delete Error: " + e.message); }
+        }
+
+        async function triggerImageUpload() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => handleImageFile(e.target.files[0]);
+            input.click();
+        }
+
+        async function handleImageFile(file) {
+            if (!file) return;
+            const repo = document.getElementById('repoSelect').value;
+            const token = document.getElementById('ghToken').value.trim();
+            
+            if (!token || !repo) {
+                const msg = currentLang === 'cn' ? "请先在下方 GitHub 栏选择一个仓库并确保已填入 Token" : "Please select a GitHub repo and provide Token first";
+                alert(msg);
+                if (!repo) document.getElementById('repoSelect').focus();
+                return;
+            }
+
+            aiStatus.textContent = currentLang === 'cn' ? "正在上传图片..." : "Uploading image...";
+            aiStatus.className = "text-xs text-amber-400 animate-pulse";
+
+            try {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async () => {
+                    const base64Content = reader.result.split(',')[1];
+                    const fileName = `img_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+                    const path = `image/${fileName}`;
+                    
+                    await ghFetch(`/repos/${repo}/contents/${path}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            message: "Upload image via AI Editor Bed",
+                            content: base64Content
+                        })
+                    });
+
+                    const [owner, name] = repo.split('/');
+                    // 使用 jsdelivr 加速或原始链接
+                    const imgUrl = `https://raw.githubusercontent.com/${owner}/${name}/main/${path}`;
+                    const imgTag = `<img src="${imgUrl}" alt="${file.name}" style="max-width:100%;">`;
+                    
+                    insertText(imgTag);
+                    aiStatus.textContent = "Image Uploaded! ✅";
+                    aiStatus.className = "text-xs text-green-400";
+                    addLog("Image Bed Upload", { repo, file: fileName });
+                };
+            } catch (e) {
+                alert("Upload Failed: " + e.message);
+                aiStatus.textContent = "Upload Failed ❌";
+            }
         }
 
         async function ghRenameRepo() {
