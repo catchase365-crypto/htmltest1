@@ -917,9 +917,9 @@
         </svg>
       </div>
       <div class="w-[1px] h-6 bg-[var(--border)] shrink-0"></div>
-      <button onclick="if(confirm(currentLang==='cn'?'确定清空代码吗？':'Clear all code?')){codeArea.value='';updateHighlight();updateLineNumbers();saveHistory();}" class="icon-btn text-xs py-1 border-red-500/30" title="Clear Code">🧹</button>
-      <button onclick="triggerImageUpload()" class="icon-btn text-xs py-1 border-amber-500/30" data-title-cn="上传图片到图床" data-title-en="Upload to Image Bed">🖼️</button>
-      <button onclick="formatCode()" class="icon-btn text-xs py-1 border-amber-900/30" data-title-cn="美化代码" data-title-en="Beautify Code" title="Beautify Code">
+      <button onclick="if(confirm(currentLang==='cn'?'确定清空代码吗？':'Clear all code?')){codeArea.value='';updateHighlight();updateLineNumbers();saveHistory();}" class="icon-btn text-xs w-7 h-7 !p-0 border-red-500/30 flex items-center justify-center" title="Clear Code">🧹</button>
+      <button onclick="triggerImageUpload()" class="icon-btn text-xs w-7 h-7 !p-0 border-amber-500/30 flex items-center justify-center" data-title-cn="上传图片到图床" data-title-en="Upload to Image Bed">🖼️</button>
+      <button onclick="formatCode()" class="icon-btn text-xs w-7 h-7 !p-0 border-amber-900/30 flex items-center justify-center" data-title-cn="美化代码" data-title-en="Beautify Code" title="Beautify Code">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
           <path d="M12 3V5M12 19V21M21 12H19M5 12H3M18.364 5.636L16.95 7.05M7.05 16.95L5.636 18.364M18.364 18.364L16.95 16.95M7.05 7.05L5.636 5.636" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
