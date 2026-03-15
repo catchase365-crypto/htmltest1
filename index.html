@@ -686,25 +686,25 @@
       <div id="aiStatus" class="text-xs text-[var(--text-dim)] min-h-[1.2em]"></div>
     </div>
 
-    <div id="themePanel" class="hidden absolute top-14 left-16 z-50 immersive-panel p-4 rounded-2xl w-52 max-h-[70vh] overflow-y-auto flex flex-col gap-2">
+    <div id="themePanel" class="hidden absolute top-14 left-16 z-50 immersive-panel p-4 rounded-2xl w-64 flex flex-col gap-2">
       <div class="flex gap-1 mb-2">
-        <button id="langCN" onclick="setLang('cn')" class="flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-white font-bold">中文</button>
+        <button id="langCN" onclick="setLang('cn')" class="flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-[var(--badge-txt)] font-bold">中文</button>
         <button id="langEN" onclick="setLang('en')" class="flex-1 py-1 rounded text-[10px] bg-[var(--bg-main)] text-[var(--text-dim)] border border-[var(--border)]">EN</button>
       </div>
-      <button onclick="toggleLineNumbers()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
-        <span>🔢</span> <span id="lineNumToggleText" data-cn="行号 [开]" data-en="Line [ON]">行号 [开]</span>
-      </button>
-      <button onclick="toggleQuickBar()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
-        <span>⚡</span> <span id="quickBarToggleText" data-cn="快捷 [关]" data-en="Quick [OFF]">快捷 [关]</span>
-      </button>
-      <button onclick="toggleBackground()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
-        <span>🖼️</span> <span id="bgToggleText" data-cn="背景 [开]" data-en="BG [ON]">背景 [开]</span>
-      </button>
-      <button onclick="toggleGithubRow()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
-        <svg class="w-4 h-4 fill-current text-[var(--accent)]" viewBox="0 0 24 24">
-          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-        </svg> <span id="ghRowToggleText" data-cn="GitHub [开]" data-en="GitHub [ON]">GitHub [开]</span>
-      </button>
+      <div class="grid grid-cols-2 gap-2 mb-2">
+        <button onclick="toggleLineNumbers()" class="text-left px-2 py-1.5 rounded text-[11px] hover:brightness-110 transition flex items-center gap-1.5 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
+          <span>🔢</span> <span id="lineNumToggleText" data-cn="行号" data-en="Line">行号</span>
+        </button>
+        <button onclick="toggleQuickBar()" class="text-left px-2 py-1.5 rounded text-[11px] hover:brightness-110 transition flex items-center gap-1.5 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
+          <span>⚡</span> <span id="quickBarToggleText" data-cn="快捷" data-en="Quick">快捷</span>
+        </button>
+        <button onclick="toggleBackground()" class="text-left px-2 py-1.5 rounded text-[11px] hover:brightness-110 transition flex items-center gap-1.5 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
+          <span>🖼️</span> <span id="bgToggleText" data-cn="背景" data-en="BG">背景</span>
+        </button>
+        <button onclick="toggleGithubRow()" class="text-left px-2 py-1.5 rounded text-[11px] hover:brightness-110 transition flex items-center gap-1.5 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
+          <span>🐙</span> <span id="ghRowToggleText" data-cn="GitHub" data-en="GitHub">GitHub</span>
+        </button>
+      </div>
       <div class="w-full h-[1px] bg-[var(--border)] mb-2"></div>
       <div id="themeList" class="flex flex-col gap-1"></div>
       <div class="w-full h-[1px] bg-[var(--border)] my-2"></div>
@@ -959,8 +959,8 @@
       
       function setLang(lang) {
           currentLang = lang;
-          document.getElementById('langCN').className = lang === 'cn' ? 'flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-white font-bold' : 'flex-1 py-1 rounded text-[10px] bg-[var(--bg-main)] text-[var(--text-dim)] border border-[var(--border)]';
-          document.getElementById('langEN').className = lang === 'en' ? 'flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-white font-bold' : 'flex-1 py-1 rounded text-[10px] bg-[var(--bg-main)] text-[var(--text-dim)] border border-[var(--border)]';
+          document.getElementById('langCN').className = lang === 'cn' ? 'flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-[var(--badge-txt)] font-bold' : 'flex-1 py-1 rounded text-[10px] bg-[var(--bg-main)] text-[var(--text-dim)] border border-[var(--border)]';
+          document.getElementById('langEN').className = lang === 'en' ? 'flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-[var(--badge-txt)] font-bold' : 'flex-1 py-1 rounded text-[10px] bg-[var(--bg-main)] text-[var(--text-dim)] border border-[var(--border)]';
           
           document.querySelectorAll('[data-cn]').forEach(el => { el.textContent = lang === 'cn' ? el.dataset.cn : el.dataset.en; });
           document.querySelectorAll('[data-title-cn]').forEach(el => { el.title = lang === 'cn' ? el.dataset.titleCn : el.dataset.titleEn; });
