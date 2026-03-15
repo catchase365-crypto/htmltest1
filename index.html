@@ -956,6 +956,20 @@
       const searchInput = document.getElementById('searchInput');
       const quickBar = document.getElementById('quickBar');
       let currentLang = 'cn';
+
+      function updateToggleLabels() {
+          const update = (id, hidden, cn, en) => {
+              const el = document.getElementById(id);
+              if (!el) return;
+              el.dataset.cn = cn + (hidden ? " [关]" : " [开]");
+              el.dataset.en = en + (hidden ? " [OFF]" : " [ON]");
+              el.textContent = currentLang === 'cn' ? el.dataset.cn : el.dataset.en;
+          };
+          update('lineNumToggleText', lineNumbers.classList.contains('hidden'), "行号", "Line");
+          update('quickBarToggleText', quickBar.classList.contains('hidden'), "快捷", "Quick");
+          update('bgToggleText', document.querySelector('.editor-container').classList.contains('no-bg'), "背景", "BG");
+          update('ghRowToggleText', document.getElementById('githubRow').classList.contains('hidden'), "GitHub", "GitHub");
+      }
       
       function setLang(lang) {
           currentLang = lang;
@@ -968,7 +982,7 @@
           
           // Special logic for theme text and placeholder
           document.getElementById('codeArea').placeholder = lang === 'cn' ? "在此输入代码..." : "Type HTML here...";
-          initThemes();
+          initThemes(); updateToggleLabels();
       }
       
       // AI 相关 DOM
@@ -1030,6 +1044,7 @@
           if (localStorage.getItem('html_editor_quickbar_visible') === 'true') toggleQuickBar();
           if (localStorage.getItem('html_editor_bg_visible') === 'false') toggleBackground();
           if (localStorage.getItem('html_editor_ghrow_visible') === 'false') toggleGithubRow();
+          updateToggleLabels();
           
           // GitHub Initialization
           const savedToken = localStorage.getItem('gh_token');
