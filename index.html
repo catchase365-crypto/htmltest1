@@ -2201,27 +2201,27 @@
         if (node.nodeType === 3) {
             const txt = node.textContent.trim();
             if (!txt) return '';
-            return `<div style="color: var(--text-main); opacity: 0.9; white-space: pre-wrap; word-break: break-all; padding: 2px 0; font-size: 10px; line-height: 1.4;">${txt}</div>`;
+            return `<span class="token comment" style="font-style: italic;">${txt.length > 50 ? txt.substring(0, 50) + '...' : txt}</span>`;
         }
 
         if (node.nodeType === 1) {
             const tag = node.tagName.toLowerCase();
             const attrs = Array.from(node.attributes).map(a => 
-                `<span style="color: var(--syn-attr);">${a.name}</span>="<span style="color: var(--syn-string);">${a.value}</span>"`
+                `<span class="token attr-name">${a.name}</span><span class="token operator">=</span><span class="token attr-value">"${a.value}"</span>`
             ).join(' ');
 
-            const tagOpen = `<span style="color: var(--syn-tag); font-weight: bold;">&lt;${tag}</span>${attrs ? ' ' + attrs : ''}<span style="color: var(--syn-tag); font-weight: bold;">&gt;</span>`;
-            const tagClose = `<span style="color: var(--syn-tag); font-weight: bold;">&lt;/${tag}&gt;</span>`;
+            const tagOpen = `<span class="token tag">&lt;${tag}</span>${attrs ? ' ' + attrs : ''}<span class="token tag">&gt;</span>`;
+            const tagClose = `<span class="token tag">&lt;/${tag}&gt;</span>`;
             
             if (node.childNodes.length > 0) {
                 const isOpen = level <= expandDepth ? 'open' : '';
                 return `
-                    <details ${isOpen} class="tree-view" style="margin-bottom: 2px;">
-                        <summary style="list-style: none; cursor: pointer; outline: none; padding: 2px 0;">${tagOpen}</summary>
-                        <div class="node-content" style="border-left: 1px solid var(--border); margin-left: 6px; padding-left: 10px;">
+                    <details ${isOpen} class="tree-view" style="margin-left: 8px;">
+                        <summary style="display: flex; align-items: center; gap: 4px; cursor: pointer;">${tagOpen}</summary>
+                        <div class="node-content" style="border-left: 1px dashed var(--border); margin-left: 12px; padding-left: 10px;">
                             ${Array.from(node.childNodes).map(child => renderNode(child, level + 1)).join('')}
                         </div>
-                        <div style="font-size: 10px; margin-top: 2px;">${tagClose}</div>
+                        <div style="margin-left: 4px;">${tagClose}</div>
                     </details>`;
             } 
             return `<div style="padding: 2px 0;">${tagOpen.replace('&gt;', ' /&gt;')}</div>`;
