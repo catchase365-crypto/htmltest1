@@ -60,8 +60,8 @@
             flex-shrink: 0;
             background-color: transparent;
             color: var(--accent);
-            /* 增加微调确保自然对比度 */
-            filter: brightness(1.1) saturate(1.2);
+            /* 智能背景色块：基于当前背景色亮度自动调整，形成视觉锚点 */
+            background-color: color-mix(in srgb, var(--bg-main) 90%, var(--text-main) 10%);
             text-align: right;
             padding: var(--editor-padding) 6px var(--editor-padding) 0;
             font-family: var(--editor-font);
@@ -1299,6 +1299,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             const theme = {
                 bg: `hsl(${baseHue}, ${uiSaturation}%, ${bgLightness}%)`,
                 ui: `hsl(${baseHue}, ${uiSaturation}%, ${isDark ? bgLightness + 6 : bgLightness - 8}%)`,
+                ln: `hsl(${baseHue}, ${uiSaturation}%, ${isDark ? bgLightness + 4 : bgLightness - 4}%)`,
                 text: `hsl(${baseHue}, ${uiSaturation/2}%, ${isDark ? 92 : 15}%)`,
                 accent: `hsl(${baseHue}, 85%, ${isDark ? 70 : 40}%)`,
                 dim: `hsl(${baseHue}, 15%, ${isDark ? 60 : 45}%)`,
@@ -1317,7 +1318,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             const root = document.documentElement;
             const props = {
                 '--bg-main': theme.bg, '--bg-ui': theme.ui, '--text-main': theme.text,
-                '--accent': theme.accent, '--text-dim': theme.dim, '--border': theme.border,
+                '--accent': theme.accent, '--text-dim': theme.dim, '--border': theme.border, '--line-num-bg': theme.ln,
                 '--caret': theme.caret, '--badge-txt': theme["badge-txt"], '--line-num-bg': theme.bg,
                 '--syn-comment': theme.syn.c, '--syn-tag': theme.syn.t, '--syn-string': theme.syn.s,
                 '--syn-func': theme.syn.f, '--syn-attr': theme.syn.a
