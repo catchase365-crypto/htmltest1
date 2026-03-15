@@ -836,6 +836,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 
     <div id="quickBar" class="ui-panel p-1 shrink-0 quick-bar whitespace-nowrap flex items-center gap-2 px-2 h-10 border-b border-[var(--border)] hidden">
         <span class="text-[10px] text-[var(--text-dim)] uppercase tracking-wider mr-1" data-cn="快捷栏:" data-en="Quick:">快捷栏:</span>
+        <button onclick="if(confirm(currentLang==='cn'?'确定清空代码吗？':'Clear all code?')){codeArea.value='';updateHighlight();updateLineNumbers();saveHistory();}" class="icon-btn text-xs py-1 border-red-500/30" title="Clear Code">🧹</button>
         <button onclick="insertText('<div class=\x22\x22></div>', 12)" class="icon-btn text-xs py-1">&lt;div&gt;</button>
         <button onclick="insertText('<p></p>', 4)" class="icon-btn text-xs py-1">&lt;p&gt;</button>
         <button onclick="insertText('<a href=\x22\x22></a>', 9)" class="icon-btn text-xs py-1">&lt;a&gt;</button>
