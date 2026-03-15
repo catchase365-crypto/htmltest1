@@ -607,7 +607,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         <div id="aiStatus" class="text-xs text-[var(--text-dim)] min-h-[1.2em]"></div>
     </div>
 
-    <div id="themePanel" class="hidden absolute top-14 left-16 z-40 bg-[var(--bg-ui)] border border-[var(--border)] p-2 rounded-xl shadow-2xl w-48 max-h-[60vh] overflow-y-auto">
+    <div id="themePanel" class="hidden absolute top-14 left-16 z-50 immersive-panel p-4 rounded-2xl w-52 max-h-[70vh] overflow-y-auto flex flex-col gap-2">
         <div class="flex gap-1 mb-2">
             <button id="langCN" onclick="setLang('cn')" class="flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-white font-bold">中文</button>
             <button id="langEN" onclick="setLang('en')" class="flex-1 py-1 rounded text-[10px] bg-[var(--bg-main)] text-[var(--text-dim)] border border-[var(--border)]">EN</button>
