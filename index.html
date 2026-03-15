@@ -620,7 +620,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             <span>🔢</span> <span id="lineNumToggleText" data-cn="行号 [开]" data-en="Line [ON]">行号 [开]</span>
         </button>
         <button onclick="toggleQuickBar()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
-            <span>&lt;/&gt;</span> <span id="quickBarToggleText" data-cn="快捷 [关]" data-en="Quick [OFF]">快捷 [关]</span>
+            <span>⚡</span> <span id="quickBarToggleText" data-cn="快捷 [关]" data-en="Quick [OFF]">快捷 [关]</span>
         </button>
         <button onclick="toggleBackground()" class="w-full text-left px-3 py-2 rounded text-sm hover:brightness-110 transition flex items-center gap-2 mb-2 text-[var(--text-main)] bg-[var(--bg-main)] border border-[var(--border)]">
             <span>🖼️</span> <span id="bgToggleText" data-cn="背景 [开]" data-en="BG [ON]">背景 [开]</span>
@@ -834,9 +834,9 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         </div>
     </div>
 
-    <div id="quickBar" class="ui-panel p-1 shrink-0 quick-bar whitespace-nowrap flex items-center gap-2 px-2 h-10 border-b border-[var(--border)] hidden">
-        <span class="text-[10px] text-[var(--text-dim)] uppercase tracking-wider mr-1" data-cn="快捷栏:" data-en="Quick:">快捷栏:</span>
-        <div class="w-[1px] h-6 bg-[var(--border)] mx-1 shrink-0"></div>
+    <div id="quickBar" class="ui-panel p-1.5 shrink-0 quick-bar whitespace-nowrap flex items-center gap-2 h-10 border-b border-[var(--border)] hidden">
+        <div class="flex items-center justify-center w-7 h-7 shrink-0 text-sm">⚡</div>
+        <div class="w-[1px] h-6 bg-[var(--border)] shrink-0"></div>
         <button onclick="if(confirm(currentLang==='cn'?'确定清空代码吗？':'Clear all code?')){codeArea.value='';updateHighlight();updateLineNumbers();saveHistory();}" class="icon-btn text-xs py-1 border-red-500/30" title="Clear Code">🧹</button>
         <button onclick="triggerImageUpload()" class="icon-btn text-xs py-1 border-amber-500/30" data-title-cn="上传图片到图床" data-title-en="Upload to Image Bed">🖼️</button>
     </div>
