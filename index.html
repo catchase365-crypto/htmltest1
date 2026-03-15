@@ -88,9 +88,10 @@
       
       textarea#codeArea,
       #highlighting-content {
-          will-change: transform, contents;
-          contain: layout style;
+          will-change: transform, scroll-position;
+          contain: strict;
           backface-visibility: hidden;
+          transform: translateZ(0);
           position: absolute;
           top: 0;
           left: 0;
@@ -1205,18 +1206,16 @@
           renderPending = true;
 
           requestAnimationFrame(() => {
-              const now = Date.now();
-              if (now - lastRenderTime < 16) {
-                  renderPending = false;
-                  return;
+              let text = codeArea.value;
+              // 修复末尾换行渲染问题
+              if (text[text.length - 1] === "\n") text += " ";
+              
+              // 性能优化：仅当文本内容实际发生变化时，才触发 DOM 更新和 Prism 解析，极大降低 GPU 负担
+              if (highlightingCode.textContent !== text) {
+                  highlightingCode.textContent = text;
+                  Prism.highlightElement(highlightingCode);
               }
 
-              let text = codeArea.value;
-              if (text[text.length - 1] === "\n") text += " ";
-              highlightingCode.textContent = text;
-              Prism.highlightElement(highlightingCode);
-
-              lastRenderTime = now;
               renderPending = false;
           });
       }
@@ -1500,11 +1499,18 @@
       }
       
       // 更新行号显示：根据 textarea 的内容动态生成行号数列，并计算最小填充高度
+      let lastLineCount = 0;
       const updateLineNumbers = () => {
           if (lineNumbers.classList.contains('hidden')) return;
           const lines = codeArea.value.split('\n').length;
           const minLines = Math.floor(window.innerHeight / 24); 
-          lineNumbers.textContent = Array.from({length: Math.max(lines, minLines)}, (_, i) => i + 1).join('\n');
+          const totalLines = Math.max(lines, minLines);
+          
+          // 性能优化：只有行数真正改变时才进行重绘，消除打字时的冗余 DOM 阻塞
+          if (totalLines === lastLineCount) return;
+          lastLineCount = totalLines;
+          
+          lineNumbers.textContent = Array.from({length: totalLines}, (_, i) => i + 1).join('\n');
       };
       
       codeArea.addEventListener('scroll', () => {
@@ -1655,6 +1661,37 @@
           if (file) {
               e.preventDefault();
               handleImageFile(file);
+          }
+      });
+
+      // 智能输入：括号/引号自动补全与 Tab 缩进处理 (大幅提升手机端打字效率)
+      codeArea.addEventListener('keydown', function(e) {
+          const pairs = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'", '<': '>' };
+          
+          if (pairs[e.key]) {
+              e.preventDefault();
+              const start = this.selectionStart;
+              const end = this.selectionEnd;
+              const selText = this.value.substring(start, end);
+              
+              // 使用 execCommand 可以完美保留浏览器的原生撤销历史 (Undo/Redo)
+              document.execCommand('insertText', false, e.key + selText + pairs[e.key]);
+              this.selectionStart = this.selectionEnd = start + 1;
+          } else if (e.key === 'Tab') {
+              e.preventDefault();
+              document.execCommand('insertText', false, '  ');
+          } else if (e.key === 'Backspace') {
+              // 自动删除成对的空括号/引号
+              const start = this.selectionStart;
+              if (start === this.selectionEnd && start > 0) {
+                  const prevChar = this.value[start - 1];
+                  const nextChar = this.value[start];
+                  if (pairs[prevChar] && pairs[prevChar] === nextChar) {
+                      e.preventDefault();
+                      this.setSelectionRange(start - 1, start + 1);
+                      document.execCommand('delete', false, null);
+                  }
+              }
           }
       });
       
