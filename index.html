@@ -1811,7 +1811,7 @@
               if (repoList) {
                   repoList.innerHTML = repos.map(r => `
                       <button onclick="selectRepo('${r.full_name}', '${r.html_url}')" class="text-left px-3 py-2 rounded-lg text-xs hover:bg-[var(--bg-main)] transition border border-transparent hover:border-[var(--border)] flex justify-between items-center text-[var(--text-main)] w-full">
-                          <span class="truncate pr-2 font-mono">${r.name}</span>
+                          <span class="truncate pr-2 font-mono font-bold">${r.name}</span>
                           <span class="text-[9px] text-[var(--text-dim)] shrink-0 px-1.5 py-0.5 rounded bg-[var(--bg-main)] border border-[var(--border)]">${r.private ? 'Private' : 'Public'}</span>
                       </button>
                   `).join('');
