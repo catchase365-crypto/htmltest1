@@ -837,18 +837,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
     <div id="quickBar" class="ui-panel p-1 shrink-0 quick-bar whitespace-nowrap flex items-center gap-2 px-2 h-10 border-b border-[var(--border)] hidden">
         <span class="text-[10px] text-[var(--text-dim)] uppercase tracking-wider mr-1" data-cn="快捷栏:" data-en="Quick:">快捷栏:</span>
         <button onclick="if(confirm(currentLang==='cn'?'确定清空代码吗？':'Clear all code?')){codeArea.value='';updateHighlight();updateLineNumbers();saveHistory();}" class="icon-btn text-xs py-1 border-red-500/30" title="Clear Code">🧹</button>
-        <button onclick="insertText('<div class=\x22\x22></div>', 12)" class="icon-btn text-xs py-1">&lt;div&gt;</button>
-        <button onclick="insertText('<p></p>', 4)" class="icon-btn text-xs py-1">&lt;p&gt;</button>
-        <button onclick="insertText('<a href=\x22\x22></a>', 9)" class="icon-btn text-xs py-1">&lt;a&gt;</button>
-        <button onclick="insertText('img src=\x22\x22', 9)" class="icon-btn text-xs py-1">img</button>
-        <button onclick="triggerImageUpload()" class="icon-btn text-xs py-1 border-amber-500/30" data-title-cn="上传图片到图床" data-title-en="Upload to Image Bed">🖼️ Bed</button>
-        <span class="w-[1px] h-4 bg-[var(--border)] mx-1"></span>
-        <button onclick="insertText('=')" class="icon-btn text-xs w-6 px-0">=</button>
-        <button onclick="insertText('\x22')" class="icon-btn text-xs w-6 px-0">"</button>
-        <button onclick="insertText('/')" class="icon-btn text-xs w-6 px-0">/</button>
-        <button onclick="insertText('&gt;')" class="icon-btn text-xs w-6 px-0">&gt;</button>
-        <button onclick="insertText(';')" class="icon-btn text-xs w-6 px-0">;</button>
-        <button onclick="insertText('  ')" class="icon-btn text-xs px-2">Tab</button>
+        <button onclick="triggerImageUpload()" class="icon-btn text-xs py-1 border-amber-500/30" data-title-cn="上传图片到图床" data-title-en="Upload to Image Bed">🖼️</button>
     </div>
 
 
