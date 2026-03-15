@@ -258,6 +258,13 @@
           transform: translateX(-50%) translateY(0);
           opacity: 1;
       }
+      /* 结构树样式 */
+      .tree-view details { margin-left: 8px; }
+      .tree-view summary { cursor: pointer; outline: none; list-style: none; display: flex; align-items: center; gap: 4px; }
+      .tree-view summary::-webkit-details-marker { display: none; }
+      .tree-view summary::before { content: '▶'; font-size: 8px; color: var(--text-dim); transition: transform 0.2s; }
+      .tree-view details[open] > summary::before { transform: rotate(90deg); }
+      .tree-view .node-content { border-left: 1px dashed var(--border); margin-left: 5px; padding-left: 10px; }
       @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: .5; }
@@ -280,6 +287,7 @@
 
     <!-- 顶部工具栏：集成了 AI、文件管理、主题设置与执行控制 -->
     <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-30 relative overflow-x-auto">
+      <!-- 左侧工具组：AI、建议、文件、设置 -->
       <div class="flex items-center gap-1">
         <button id="aiToggleBtn" onclick="toggleAiPanel()" class="icon-btn w-9 h-9 border-emerald-500/50 text-emerald-400 bg-emerald-900/20 overflow-hidden relative" data-title-cn="AI 助手" data-title-en="AI Assistant" title="AI Assistant">
           <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 drop-shadow-[0_0_5px_rgba(0,255,127,0.4)]">
@@ -522,6 +530,7 @@
           </svg>
         </button>
         <div class="w-[1px] h-6 bg-[var(--border)] mx-1"></div>
+        <!-- 历史操作组：撤销与重做 -->
         <div class="flex gap-1">
           <button id="undoBtn" onclick="editorUndo()" class="icon-btn w-9 h-9 px-0 relative" data-title-cn="撤销" data-title-en="Undo" title="Undo">
             <span>↩</span>
@@ -535,6 +544,7 @@
         <div class="w-[1px] h-6 bg-[var(--border)] mx-1"></div>
       </div>
 
+      <!-- 右侧执行组：运行与下载 -->
       <div class="flex items-center gap-1">
         <button onclick="handleClick(event)" onmousedown="startPress()" ontouchstart="startPress()" onmouseup="cancelPress()" onmouseleave="cancelPress()" ontouchend="cancelPress()" oncontextmenu="return false;" class="icon-btn w-9 h-9 px-0 border-green-900/50 text-green-400 bg-green-900/10" data-title-cn="运行 (长按开启实时预览)" data-title-en="Run (Hold for Live Preview)" title="Run (Hold for Live Preview)">
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="w-[2.1rem] h-[2.1rem]">
@@ -741,7 +751,7 @@
         <button onclick="toggleRepoPanel()" class="text-[var(--text-dim)] hover:text-[var(--text-main)]">✕</button>
       </div>
       <div id="repoList" class="flex flex-col gap-1 overflow-y-auto no-scrollbar">
-         <div class="text-xs text-[var(--text-dim)] text-center py-4" data-cn="暂无仓库..." data-en="No repos found...">暂无仓库...</div>
+        <div class="text-xs text-[var(--text-dim)] text-center py-4" data-cn="暂无仓库..." data-en="No repos found...">暂无仓库...</div>
       </div>
     </div>
 
@@ -924,6 +934,7 @@
         </div>
       </div>
       <div class="w-[1px] h-6 bg-[var(--border)] shrink-0"></div>
+      <!-- 仓库操作组：选择、拉取、同步、部署 -->
       <div class="flex items-center gap-1 shrink-0">
         <input type="hidden" id="repoSelect" value="">
         <button id="repoSelectBtn" onclick="toggleRepoPanel()" class="bg-[var(--bg-main)] text-[var(--text-main)] text-[10px] p-1.5 rounded border border-[var(--border)] max-w-[100px] truncate outline-none text-left">Repos...</button>
@@ -937,6 +948,7 @@
         <button onclick="editorConfirm(currentLang==='cn'?'危险操作：确定永久删除此仓库吗？':'DANGER: Permanently delete this repository?', ghDeleteRepo)" class="icon-btn p-1 text-xs text-red-400" title="Delete Repo">​🚮</button>
       </div>
       <div class="w-[1px] h-6 bg-[var(--border)] shrink-0"></div>
+      <!-- 仓库管理组：日志、新建仓库 -->
       <div class="flex items-center gap-1 flex-grow min-w-0">
         <button onclick="showLogModal()" class="icon-btn p-1.5 text-xs" title="View Logs">📜</button>
         <input type="text" id="newRepoName" data-placeholder-cn="新仓库名..." data-placeholder-en="New Repo..." placeholder="New Repo..." class="bg-[var(--bg-main)] text-[var(--text-main)] text-[10px] p-1.5 rounded border border-[var(--border)] flex-grow min-w-[60px] outline-none">
@@ -960,10 +972,13 @@
           <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
+      <button onclick="showStructureExplorer()" class="icon-btn text-xs w-7 h-7 !p-0 border-blue-500/30 flex items-center justify-center" data-title-cn="结构浏览器" data-title-en="Structure Explorer" title="Structure Explorer">🌿</button>
     </div>
 
     <main class="editor-container">
+      <!-- 编辑器行号显示区域 -->
       <div id="lineNumbers" class="line-numbers">1</div>
+      <!-- 编辑器主体：包含高亮层与输入层 -->
       <div class="editor-wrapper">
         <pre id="highlighting-content" aria-hidden="true"><code class="language-markup" id="highlighting-code"></code></pre>
         <textarea id="codeArea" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Type HTML here..."></textarea>
@@ -993,7 +1008,7 @@
               setTimeout(() => toast.remove(), 300);
           }, 3000);
       }
-
+      
       // 显示带有回调功能的确认对话框，用于执行删除、覆盖等危险操作前的二次确认
       function editorConfirm(msg, onConfirm) {
           const overlay = document.createElement('div');
@@ -1011,7 +1026,7 @@
           overlay.querySelector('#confirmCancel').onclick = () => overlay.remove();
           overlay.querySelector('#confirmOk').onclick = () => { overlay.remove(); onConfirm(); };
       }
-
+      
       // 显示带有输入框的确认对话框 (Prompt)，常用于仓库重命名等需要用户输入信息的场景
       function editorPrompt(msg, onConfirm) {
           const overlay = document.createElement('div');
@@ -1036,7 +1051,7 @@
               if(val) onConfirm(val); 
           };
       }
-
+      
       // --- 1. 配置与初始化 ---
       const themes = [
           { name: "Deep Purple", nameCn: "深邃紫", bg: "#161122", ui: "#1e192c", text: "#e2e8f0", accent: "#a78bfa", "badge-txt": "#ffffff", border: "#352e46", dim: "#94a3b8", caret: "#ffffff", syn: { c: "#6a737d", t: "#f97583", s: "#9ecbff", f: "#b392f0", a: "#ffab70" } },
@@ -2168,6 +2183,64 @@
           }
       }
       
+      // 弹出 HTML 结构浏览器 (类似 F12 展开折叠)
+      function showStructureExplorer() {
+          const modal = document.createElement('div');
+          modal.className = 'fixed inset-0 z-[10001] flex items-center justify-center bg-black/70 backdrop-blur-md p-4';
+          modal.onclick = () => modal.remove();
+          
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(codeArea.value, 'text/html');
+          let expandDepth = 2;
+          
+          const renderNode = (node, level = 1) => {
+              if (node.nodeType === 3) {
+                  const txt = node.textContent.trim();
+                  return txt ? `<div class="text-[var(--text-dim)] py-0.5 opacity-60 italic text-[10px]">"${txt}"</div>` : '';
+              }
+              if (node.nodeType === 1) {
+                  const tag = node.tagName.toLowerCase();
+                  const attrs = Array.from(node.attributes).map(a => `<span class="text-[var(--syn-attr)]">${a.name}</span>="<span class="text-[var(--syn-string)]">${a.value}</span>"`).join(' ');
+                  const tagLabel = `<span class="text-[var(--syn-tag)]">&lt;${tag}</span>${attrs ? ' ' + attrs : ''}<span class="text-[var(--syn-tag)]">&gt;</span>`;
+                  
+                  if (node.childNodes.length > 0) {
+                      const isOpen = level <= expandDepth ? 'open' : '';
+                      return `<details ${isOpen} class="tree-view"><summary class="py-0.5 hover:bg-white/5 rounded">${tagLabel}</summary>
+                              <div class="node-content">${Array.from(node.childNodes).map(child => renderNode(child, level + 1)).join('')}</div>
+                              <div class="text-[var(--syn-tag)] text-[10px] ml-[-8px]">&lt;/${tag}&gt;</div>
+                              </details>`;
+                  } 
+                  return `<div class="py-0.5 text-[var(--syn-tag)]">&lt;${tag}${attrs ? ' ' + attrs : ''} /&gt;</div>`;
+              }
+              return '';
+          };
+
+          const updateUI = () => {
+              modal.querySelector('#treeContainer').innerHTML = renderNode(doc.documentElement, 1) || 'No Structure Found';
+              modal.querySelector('#depthToggle').textContent = (currentLang === 'cn' ? '展开层级: ' : 'Depth: ') + expandDepth;
+          };
+
+          modal.innerHTML = `
+              <div class="immersive-panel p-6 rounded-3xl w-full max-w-lg max-h-[80vh] flex flex-col gap-4 animate-in zoom-in duration-200" onclick="event.stopPropagation()">
+                  <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+                      <h3 class="text-sm font-bold text-[var(--accent)]">${currentLang === 'cn' ? 'HTML 结构浏览器' : 'Structure Explorer'}</h3>
+                      <div class="flex items-center gap-2">
+                          <button id="depthToggle" class="text-[10px] bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 px-2 py-0.5 rounded-md hover:bg-[var(--accent)]/20 transition-colors"></button>
+                          <button onclick="this.closest('.fixed').remove()" class="text-[var(--text-dim)] hover:text-white transition-colors">✕</button>
+                      </div>
+                  </div>
+                  <div id="treeContainer" class="flex-grow overflow-auto font-mono text-[11px] leading-tight no-scrollbar"></div>
+              </div>`;
+          
+          modal.querySelector('#depthToggle').onclick = () => {
+              expandDepth = (expandDepth % 6) + 1;
+              updateUI();
+          };
+
+          document.body.appendChild(modal);
+          updateUI();
+      }
+
       // 修改当前选定 GitHub 仓库的显示名称
       async function ghRenameRepo() {
           const repo = document.getElementById('repoSelect').value;
