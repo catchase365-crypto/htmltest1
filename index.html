@@ -19,6 +19,7 @@
           --caret: #ffffff;
           --badge-txt: #ffffff;
           --line-num-bg: #161122;
+          --line-num-width: 43px; /* [行号宽] 调节此值以对齐上方工具栏分割线 */
           --editor-font: 'Menlo', 'Monaco', 'Courier New', monospace;
           --editor-size: 15px;      
           --editor-line-height: 24px; 
@@ -59,7 +60,7 @@
       }
       
       .line-numbers {
-          width: 48px;
+          width: var(--line-num-width);
           flex-shrink: 0;
           background-color: transparent;
           color: var(--accent);
