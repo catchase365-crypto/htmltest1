@@ -644,7 +644,7 @@
       </div>
     </header>
 
-    <!-- 智能建议面板：分析代码并生成可点击的优化建议 -->
+    <!-- 智能建议面板：分析代码并生成可点击的优化建议，包含 Chip 标签和输入框 -->
     <div id="suggestionPanel" class="hidden absolute top-14 left-2 z-50 immersive-panel p-4 rounded-2xl w-[90%] max-w-[400px] flex flex-col gap-3">
       <div class="flex justify-between items-center pb-2 border-b border-[var(--border)]">
         <div class="flex items-center gap-2">
@@ -667,7 +667,7 @@
       </div>
     </div>
 
-    <!-- AI 对话面板：配置 API Key、模型选择及发送修改指令 -->
+    <!-- AI 对话面板：包含 API Key 配置、Gemini 模型切换以及 AI 指令输入区域 -->
     <div id="aiPanel" class="hidden absolute top-14 left-2 z-50 immersive-panel p-4 rounded-2xl w-[90%] max-w-[400px] flex flex-col gap-3">
       <div class="flex justify-between items-center pb-2 border-b border-[var(--border)]">
         <div class="flex items-center gap-2">
@@ -703,6 +703,7 @@
       <div id="aiStatus" class="text-xs text-[var(--text-dim)] min-h-[1.2em]"></div>
     </div>
 
+    <!-- 主题与设置面板：包含语言切换、功能开关（行号/背景等）以及预设主题选择列表 -->
     <div id="themePanel" class="hidden absolute top-14 left-16 z-50 immersive-panel p-4 rounded-2xl w-64 flex flex-col gap-2">
       <div class="flex gap-1 mb-2">
         <button id="langCN" onclick="setLang('cn')" class="flex-1 py-1 rounded text-[10px] bg-[var(--accent)] text-[var(--badge-txt)] font-bold">中文</button>
@@ -730,6 +731,7 @@
       </button>
     </div>
 
+    <!-- GitHub 仓库选择面板：展示从 GitHub 获取的所有用户仓库列表 -->
     <div id="repoPanel" class="hidden absolute top-14 left-2 z-50 immersive-panel p-4 rounded-2xl w-[90%] max-w-[400px] flex flex-col gap-3 max-h-[60vh] overflow-hidden">
       <div class="flex justify-between items-center pb-2 border-b border-[var(--border)]">
         <div class="flex items-center gap-2">
@@ -743,6 +745,7 @@
       </div>
     </div>
 
+    <!-- 搜索与字号调节工具栏：包含实时搜索框、搜索导航按钮以及编辑器字号增减控制 -->
     <div class="ui-panel p-1.5 flex flex-nowrap items-center gap-2 shrink-0 z-20">
       <div class="flex items-center flex-grow bg-[var(--bg-main)] rounded-full border border-[var(--border)] px-4 py-1.5 min-w-0">
         <input type="text" id="searchInput" data-placeholder-cn="搜索..." data-placeholder-en="Search..." placeholder="Search..." class="bg-transparent border-none text-sm text-[var(--text-main)] focus:outline-none w-full min-w-[20px]">
@@ -941,6 +944,7 @@
       </div>
     </div>
 
+    <!-- 快捷操作栏：包含清空代码、图片上传、代码美化等高频操作按钮 -->
     <div id="quickBar" class="ui-panel p-1.5 shrink-0 quick-bar whitespace-nowrap flex items-center gap-2 h-10 border-b border-[var(--border)] hidden">
       <div class="flex items-center justify-center w-7 h-7 shrink-0 text-[var(--accent)]">
         <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
@@ -968,7 +972,12 @@
 
     <script>
       // --- 0. UI Helper 系统 ---
-      // 显示自定义通知弹窗 (Toast)
+      
+      /**
+       * 显示自定义通知弹窗 (Toast)
+       * @param {string} msg - 提示消息内容
+       * @param {string} type - 弹窗类型 (info/error)
+       */
       function editorNotify(msg, type = 'info') {
           const toast = document.createElement('div');
           const isError = type === 'error';
@@ -985,7 +994,7 @@
           }, 3000);
       }
 
-      // 显示带有回调功能的确认对话框
+      // 显示带有回调功能的确认对话框，用于执行删除、覆盖等危险操作前的二次确认
       function editorConfirm(msg, onConfirm) {
           const overlay = document.createElement('div');
           overlay.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4';
@@ -1003,7 +1012,7 @@
           overlay.querySelector('#confirmOk').onclick = () => { overlay.remove(); onConfirm(); };
       }
 
-      // 显示带有输入框的确认对话框 (Prompt)
+      // 显示带有输入框的确认对话框 (Prompt)，常用于仓库重命名等需要用户输入信息的场景
       function editorPrompt(msg, onConfirm) {
           const overlay = document.createElement('div');
           overlay.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4';
@@ -1214,7 +1223,7 @@
           ).join('');
       }
       
-      // 分析当前代码并向 AI 请求改进建议 (生成 Chip 标签)
+      // 分析当前代码并向 AI 请求改进建议：通过 API 获取建议并生成可点击的 Chip 标签
       async function getSmartSuggestions() {
           const key = apiKeyInput.value.trim();
           const model = aiModelSelect.value;
@@ -1270,6 +1279,7 @@
           }
       }
       
+      // 应用 AI 建议：将建议文本填入 AI 指令框并自动触发执行
       function applyAiSuggestion(text) {
           aiPromptInput.value = text;
           callGemini();
@@ -1451,6 +1461,7 @@
           setTimeout(updateLineNumbers, 0);
       }
       
+      // 更新行号显示：根据 textarea 的内容动态生成行号数列，并计算最小填充高度
       const updateLineNumbers = () => {
           if (lineNumbers.classList.contains('hidden')) return;
           const lines = codeArea.value.split('\n').length;
@@ -1772,7 +1783,7 @@
           document.body.appendChild(a); a.click(); document.body.removeChild(a);
       }
       
-      // 开启或聚焦实时预览窗口
+      // 开启或聚焦实时预览窗口：如果窗口不存在则新建，并同步当前代码内容
       function toggleLivePreview() {
           if (!previewWindow || previewWindow.closed) {
               previewWindow = window.open("", "EditorLivePreview");
@@ -1881,6 +1892,7 @@
           }
       }
       
+      // 更新仓库链接（旧版逻辑兼容保留区）
       function updateRepoLink() {
           // Legacy support
       }
@@ -1915,6 +1927,7 @@
           } catch (e) { editorNotify("Sync Error: " + e.message, 'error'); }
       }
       
+      // 从 GitHub 仓库拉取 index.html：下载仓库中的 HTML 文件内容并覆盖编辑器当前代码
       async function ghDownloadIndex() {
           const repo = document.getElementById('repoSelect').value;
           if (!repo) return editorNotify(currentLang === 'cn' ? "请先选择一个仓库" : "Select a repo", "error");
