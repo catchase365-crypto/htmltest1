@@ -28,6 +28,8 @@
             --syn-attr: #6f42c1;
             --syn-string: #032f62;
             --syn-func: #005cc5;
+            /* 亮色主题阴影透明度调节 */
+            --panel-shadow-opacity: 0.1;
         }
 
         html, body {
@@ -136,6 +138,8 @@
         .ui-panel {
             background-color: var(--bg-ui);
             border-bottom: 1px solid var(--border);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, var(--panel-shadow-opacity));
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .immersive-panel {
@@ -256,7 +260,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
 </head>
 <body class="flex flex-col h-[100dvh]">
 
-    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-30 shadow-[0_10px_20px_-5px_rgba(0,0,0,0.6)] relative overflow-x-auto">
+    <header class="ui-panel p-2 flex items-center justify-between shrink-0 z-30 relative overflow-x-auto">
         <div class="flex items-center gap-1">
             <button id="aiToggleBtn" onclick="toggleAiPanel()" class="icon-btn w-9 h-9 border-emerald-500/50 text-emerald-400 bg-emerald-900/20 overflow-hidden relative" data-title-cn="AI 助手" data-title-en="AI Assistant" title="AI Assistant">
                 <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 drop-shadow-[0_0_5px_rgba(0,255,127,0.4)]">
@@ -632,7 +636,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         </button>
     </div>
 
-    <div class="ui-panel p-1.5 flex flex-nowrap items-center gap-2 shrink-0 z-20 shadow-[0_8px_15px_-4px_rgba(0,0,0,0.5)]">
+    <div class="ui-panel p-1.5 flex flex-nowrap items-center gap-2 shrink-0 z-20">
         <div class="flex items-center flex-grow bg-[var(--bg-main)] rounded-full border border-[var(--border)] px-4 py-1.5 min-w-0">
             <input type="text" id="searchInput" data-placeholder-cn="搜索..." data-placeholder-en="Search..." placeholder="Search..." class="bg-transparent border-none text-sm text-[var(--text-main)] focus:outline-none w-full min-w-[20px]">
             <span id="searchCount" class="text-[10px] font-mono text-[var(--text-dim)] whitespace-nowrap px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded-full ml-1 text-center shadow-inner opacity-0 scale-90 transition-all duration-200 pointer-events-none"></span>
@@ -794,7 +798,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
     </div>
 
     <!-- GitHub Integration Row -->
-    <div id="githubRow" class="ui-panel p-1.5 flex flex-nowrap items-center gap-2 shrink-0 z-10 overflow-x-auto no-scrollbar shadow-[0_6px_12px_-3px_rgba(0,0,0,0.5)]">
+    <div id="githubRow" class="ui-panel p-1.5 flex flex-nowrap items-center gap-2 shrink-0 z-10 overflow-x-auto no-scrollbar">
         <div class="flex items-center gap-1 shrink-0">
             <button class="text-sm px-1" title="GitHub Settings" onclick="document.getElementById('ghPanel').classList.toggle('hidden')">
             <svg class="w-5 h-5 fill-current text-[var(--text-main)]" viewBox="0 0 24 24" aria-hidden="true">
@@ -830,7 +834,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         </div>
     </div>
 
-    <div id="quickBar" class="ui-panel p-1 shrink-0 quick-bar whitespace-nowrap flex items-center gap-2 px-2 h-10 border-b border-[var(--border)] shadow-[0_6px_12px_-3px_rgba(0,0,0,0.5)] hidden">
+    <div id="quickBar" class="ui-panel p-1 shrink-0 quick-bar whitespace-nowrap flex items-center gap-2 px-2 h-10 border-b border-[var(--border)] hidden">
         <span class="text-[10px] text-[var(--text-dim)] uppercase tracking-wider mr-1" data-cn="快捷栏:" data-en="Quick:">快捷栏:</span>
         <button onclick="insertText('<div class=\x22\x22></div>', 12)" class="icon-btn text-xs py-1">&lt;div&gt;</button>
         <button onclick="insertText('<p></p>', 4)" class="icon-btn text-xs py-1">&lt;p&gt;</button>
@@ -1278,6 +1282,14 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
         function applyTheme(idx) {
             const t = themes[idx];
             const root = document.documentElement;
+            
+            // 自动检测主题亮度以调节阴影
+            const hex = t.bg.replace('#', '');
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            root.style.setProperty('--panel-shadow-opacity', brightness > 128 ? '0.12' : '0.5');
             Object.keys(t).forEach(k => {
                 if(k !== 'name' && k !== 'nameCn' && k !== 'syn') root.style.setProperty(k === 'dim' ? '--text-dim' : (k === 'border' ? '--border' : `--${k === 'ui' ? 'bg-ui' : (k === 'text' ? 'text-main' : (k === 'bg' ? 'bg-main' : k))}`), t[k]);
             });
@@ -1336,6 +1348,7 @@ if("service-worker" in navigator) navigator.serviceWorker.register("sw.js");
             };
             
             Object.entries(props).forEach(([k, v]) => root.style.setProperty(k, v));
+            root.style.setProperty('--panel-shadow-opacity', isDark ? '0.5' : '0.12');
             
             localStorage.setItem('html_editor_custom_theme', JSON.stringify(theme));
             localStorage.removeItem('html_editor_theme_idx');
