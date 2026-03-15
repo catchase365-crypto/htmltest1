@@ -19,7 +19,7 @@
           --caret: #ffffff;
           --badge-txt: #ffffff;
           --line-num-bg: #161122;
-          --line-num-width: 43px; /* [行号宽] 调节此值以对齐上方工具栏分割线 */
+          --line-num-width: 42px; /* [行号宽] 调节此值以对齐上方工具栏分割线 */
           --editor-font: 'Menlo', 'Monaco', 'Courier New', monospace;
           --editor-size: 15px;      
           --editor-line-height: 24px; 
@@ -243,6 +243,20 @@
       .suggest-chip:hover {
           background: rgba(167, 139, 250, 0.2);
           transform: translateY(-1px);
+      }
+      .editor-toast {
+          position: fixed;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%) translateY(-20px);
+          z-index: 9999;
+          min-width: 280px;
+          opacity: 0;
+          transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      }
+      .editor-toast.show {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
       }
       @keyframes pulse {
           0%, 100% { opacity: 1; }
@@ -713,6 +727,19 @@
       </button>
     </div>
 
+    <div id="repoPanel" class="hidden absolute top-14 left-2 z-50 immersive-panel p-4 rounded-2xl w-[90%] max-w-[400px] flex flex-col gap-3 max-h-[60vh] overflow-hidden">
+      <div class="flex justify-between items-center pb-2 border-b border-[var(--border)]">
+        <div class="flex items-center gap-2">
+          <span class="text-xs">📂</span>
+          <span class="text-sm font-bold text-blue-400" data-cn="选择仓库" data-en="Select Repo">选择仓库</span>
+        </div>
+        <button onclick="toggleRepoPanel()" class="text-[var(--text-dim)] hover:text-[var(--text-main)]">✕</button>
+      </div>
+      <div id="repoList" class="flex flex-col gap-1 overflow-y-auto no-scrollbar">
+         <div class="text-xs text-[var(--text-dim)] text-center py-4" data-cn="暂无仓库..." data-en="No repos found...">暂无仓库...</div>
+      </div>
+    </div>
+
     <div class="ui-panel p-1.5 flex flex-nowrap items-center gap-2 shrink-0 z-20">
       <div class="flex items-center flex-grow bg-[var(--bg-main)] rounded-full border border-[var(--border)] px-4 py-1.5 min-w-0">
         <input type="text" id="searchInput" data-placeholder-cn="搜索..." data-placeholder-en="Search..." placeholder="Search..." class="bg-transparent border-none text-sm text-[var(--text-main)] focus:outline-none w-full min-w-[20px]">
@@ -891,17 +918,16 @@
       </div>
       <div class="w-[1px] h-6 bg-[var(--border)] shrink-0"></div>
       <div class="flex items-center gap-1 shrink-0">
-        <select id="repoSelect" onchange="updateRepoLink()" class="bg-[var(--bg-main)] text-[var(--text-main)] text-[10px] p-1.5 rounded border border-[var(--border)] max-w-[100px] outline-none">
-          <option value="">Repos...</option>
-        </select>
-        <button onclick="if(confirm(currentLang==='cn'?'确定刷新仓库列表吗？':'Refresh repo list?')) ghListRepos()" class="icon-btn p-1 text-xs" title="Refresh Repo List">🔄</button>
-        <button onclick="if(confirm(currentLang==='cn'?'确定从仓库拉取index.html吗？此操作会覆盖当前编辑器内容。':'Pull index.html from repo? This will overwrite current code.')) ghDownloadIndex()" class="icon-btn p-1 text-xs" title="Load Repo index.html to Editor">⤵️</button>
-        <button onclick="if(confirm(currentLang==='cn'?'确定同步当前代码到GitHub吗？':'Sync current code to GitHub?')) ghUpdateRepo()" class="icon-btn p-1 text-xs" title="Overwrite Repo index.html with Current Code">⤴️</button>
+        <input type="hidden" id="repoSelect" value="">
+        <button id="repoSelectBtn" onclick="toggleRepoPanel()" class="bg-[var(--bg-main)] text-[var(--text-main)] text-[10px] p-1.5 rounded border border-[var(--border)] max-w-[100px] truncate outline-none text-left">Repos...</button>
+        <button onclick="editorConfirm(currentLang==='cn'?'确定刷新仓库列表吗？':'Refresh repo list?', ghListRepos)" class="icon-btn p-1 text-xs" title="Refresh Repo List">🔄</button>
+        <button onclick="editorConfirm(currentLang==='cn'?'确定从仓库拉取index.html吗？此操作会覆盖当前编辑器内容。':'Pull index.html from repo? This will overwrite current code.', ghDownloadIndex)" class="icon-btn p-1 text-xs" title="Load Repo index.html to Editor">⤵️</button>
+        <button onclick="editorConfirm(currentLang==='cn'?'确定同步当前代码到GitHub吗？':'Sync current code to GitHub?', ghUpdateRepo)" class="icon-btn p-1 text-xs" title="Overwrite Repo index.html with Current Code">⤴️</button>
         <button onclick="ghOpenPages()" class="icon-btn p-1 text-xs" title="Open GitHub Pages">🌐</button>
         <button id="ghRepoLinkBtn" onclick="ghOpenRepo()" class="icon-btn p-1 text-xs" title="Open Repo">📂</button>
         <button onclick="ghDownloadToPC()" class="icon-btn p-1 text-xs" title="Download Repo index.html to PC">💾</button>
-        <button onclick="if(confirm(currentLang==='cn'?'确定重命名此仓库吗？':'Rename this repository?')) ghRenameRepo()" class="icon-btn p-1 text-xs" title="Rename Repo">✏️</button>
-        <button onclick="if(confirm(currentLang==='cn'?'危险操作：确定永久删除此仓库吗？':'DANGER: Permanently delete this repository?')) ghDeleteRepo()" class="icon-btn p-1 text-xs text-red-400" title="Delete Repo">​🚮</button>
+        <button onclick="ghRenameRepo()" class="icon-btn p-1 text-xs" title="Rename Repo">✏️</button>
+        <button onclick="editorConfirm(currentLang==='cn'?'危险操作：确定永久删除此仓库吗？':'DANGER: Permanently delete this repository?', ghDeleteRepo)" class="icon-btn p-1 text-xs text-red-400" title="Delete Repo">​🚮</button>
       </div>
       <div class="w-[1px] h-6 bg-[var(--border)] shrink-0"></div>
       <div class="flex items-center gap-1 flex-grow min-w-0">
@@ -918,7 +944,7 @@
         </svg>
       </div>
       <div class="w-[1px] h-6 bg-[var(--border)] shrink-0"></div>
-      <button onclick="if(confirm(currentLang==='cn'?'确定清空代码吗？':'Clear all code?')){codeArea.value='';updateHighlight();updateLineNumbers();saveHistory();}" class="icon-btn text-xs w-7 h-7 !p-0 border-red-500/30 flex items-center justify-center" title="Clear Code">🧹</button>
+      <button onclick="editorConfirm(currentLang==='cn'?'确定清空代码吗？':'Clear all code?', () => {codeArea.value='';updateHighlight();updateLineNumbers();saveHistory();})" class="icon-btn text-xs w-7 h-7 !p-0 border-red-500/30 flex items-center justify-center" title="Clear Code">🧹</button>
       <button onclick="triggerImageUpload()" class="icon-btn text-xs w-7 h-7 !p-0 border-amber-500/30 flex items-center justify-center" data-title-cn="上传图片到图床" data-title-en="Upload to Image Bed">🖼️</button>
       <button onclick="formatCode()" class="icon-btn text-xs w-7 h-7 !p-0 border-amber-900/30 flex items-center justify-center" data-title-cn="美化代码" data-title-en="Beautify Code" title="Beautify Code">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
@@ -937,6 +963,64 @@
     </main>
 
     <script>
+      // --- 0. UI Helper 系统 ---
+      function editorNotify(msg, type = 'info') {
+          const toast = document.createElement('div');
+          const isError = type === 'error';
+          toast.className = `editor-toast immersive-panel p-4 rounded-2xl flex items-center gap-3 border ${isError ? 'border-red-500/50' : 'border-emerald-500/50'}`;
+          toast.innerHTML = `
+              <span class="text-lg">${isError ? '❌' : '✅'}</span>
+              <span class="text-xs font-medium ${isError ? 'text-red-400' : 'text-emerald-400'}">${msg}</span>
+          `;
+          document.body.appendChild(toast);
+          setTimeout(() => toast.classList.add('show'), 10);
+          setTimeout(() => {
+              toast.classList.remove('show');
+              setTimeout(() => toast.remove(), 300);
+          }, 3000);
+      }
+
+      function editorConfirm(msg, onConfirm) {
+          const overlay = document.createElement('div');
+          overlay.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4';
+          overlay.innerHTML = `
+              <div class="immersive-panel p-6 rounded-3xl w-full max-w-xs animate-in zoom-in duration-200">
+                  <p class="text-sm text-[var(--text-main)] mb-6 text-center leading-relaxed">${msg}</p>
+                  <div class="flex gap-3">
+                      <button id="confirmCancel" class="flex-1 py-2 rounded-xl text-xs bg-[var(--bg-main)] border border-[var(--border)] text-[var(--text-dim)]">${currentLang === 'cn' ? '取消' : 'Cancel'}</button>
+                      <button id="confirmOk" class="flex-1 py-2 rounded-xl text-xs bg-emerald-600 text-white font-bold">${currentLang === 'cn' ? '确定' : 'Confirm'}</button>
+                  </div>
+              </div>
+          `;
+          document.body.appendChild(overlay);
+          overlay.querySelector('#confirmCancel').onclick = () => overlay.remove();
+          overlay.querySelector('#confirmOk').onclick = () => { overlay.remove(); onConfirm(); };
+      }
+
+      function editorPrompt(msg, onConfirm) {
+          const overlay = document.createElement('div');
+          overlay.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4';
+          overlay.innerHTML = `
+              <div class="immersive-panel p-6 rounded-3xl w-full max-w-sm animate-in zoom-in duration-200">
+                  <p class="text-sm text-[var(--text-main)] mb-4 text-center leading-relaxed">${msg}</p>
+                  <input type="text" id="promptInput" class="w-full bg-[var(--bg-main)] text-[var(--text-main)] text-sm p-3 rounded-xl border border-[var(--border)] focus:border-blue-500 outline-none mb-6">
+                  <div class="flex gap-3">
+                      <button id="promptCancel" class="flex-1 py-2.5 rounded-xl text-xs bg-[var(--bg-main)] border border-[var(--border)] text-[var(--text-dim)]">${currentLang === 'cn' ? '取消' : 'Cancel'}</button>
+                      <button id="promptOk" class="flex-1 py-2.5 rounded-xl text-xs bg-blue-600 text-white font-bold">${currentLang === 'cn' ? '确定' : 'Confirm'}</button>
+                  </div>
+              </div>
+          `;
+          document.body.appendChild(overlay);
+          const input = overlay.querySelector('#promptInput');
+          input.focus();
+          overlay.querySelector('#promptCancel').onclick = () => overlay.remove();
+          overlay.querySelector('#promptOk').onclick = () => { 
+              const val = input.value.trim();
+              overlay.remove(); 
+              if(val) onConfirm(val); 
+          };
+      }
+
       // --- 1. 配置与初始化 ---
       const themes = [
           { name: "Deep Purple", nameCn: "深邃紫", bg: "#161122", ui: "#1e192c", text: "#e2e8f0", accent: "#a78bfa", "badge-txt": "#ffffff", border: "#352e46", dim: "#94a3b8", caret: "#ffffff", syn: { c: "#6a737d", t: "#f97583", s: "#9ecbff", f: "#b392f0", a: "#ffab70" } },
@@ -956,7 +1040,7 @@
       const searchInput = document.getElementById('searchInput');
       const quickBar = document.getElementById('quickBar');
       let currentLang = 'cn';
-
+      
       function updateToggleLabels() {
           const update = (id, hidden, cn, en) => {
               const el = document.getElementById(id);
@@ -1120,7 +1204,7 @@
           const code = codeArea.value;
           const chatHint = suggestChatInput.value.trim();
       
-          if (!key) { alert("Please input API Key in AI Panel first"); toggleAiPanel(); return; }
+          if (!key) { editorNotify(currentLang === 'cn' ? "请先在AI面板输入API密钥" : "Please input API Key in AI Panel first", "error"); toggleAiPanel(); return; }
       
           if (aiPanel.classList.contains('hidden')) toggleAiPanel();
           document.getElementById('aiSuggestions').innerHTML = '<div class="text-xs text-[var(--text-dim)] animate-pulse">Analyzing...</div>';
@@ -1186,8 +1270,8 @@
           const code = codeArea.value;
           const model = aiModelSelect.value;
       
-          if (!key) { alert("Input API Key first"); return; }
-          if (!prompt) { alert("Input prompt first"); return; }
+          if (!key) { editorNotify(currentLang === 'cn' ? "请先输入API密钥" : "Input API Key first", "error"); return; }
+          if (!prompt) { editorNotify(currentLang === 'cn' ? "请先输入指令" : "Input prompt first", "error"); return; }
       
           localStorage.setItem('gemini_api_key', key);
           
@@ -1602,7 +1686,7 @@
       
       function runCode() {
           const w = window.open("", "_blank");
-          if(w) { w.document.write(codeArea.value); w.document.close(); } else alert("Allow Popups!");
+          if(w) { w.document.write(codeArea.value); w.document.close(); } else editorNotify(currentLang === 'cn' ? "请允许弹出窗口！" : "Allow Popups!", "error");
       }
       
       function formatCode() {
@@ -1722,22 +1806,38 @@
       
       async function ghListRepos() {
           try {
-              // 增加随机时间戳参数 t 绕过 GitHub API 或浏览器的潜在缓存，确保数据实时性
               const repos = await ghFetch(`/user/repos?per_page=100&sort=updated&t=${Date.now()}`);
-              const select = document.getElementById('repoSelect');
-              select.innerHTML = '<option value="">Repos...</option>' + 
-                  repos.map(r => `<option value="${r.full_name}" data-url="${r.html_url}">${r.name}</option>`).join('');
-          } catch (e) { alert("GitHub: " + e.message); }
+              const repoList = document.getElementById('repoList');
+              if (repoList) {
+                  repoList.innerHTML = repos.map(r => `
+                      <button onclick="selectRepo('${r.full_name}', '${r.html_url}')" class="text-left px-3 py-2 rounded-lg text-xs hover:bg-[var(--bg-main)] transition border border-transparent hover:border-[var(--border)] flex justify-between items-center text-[var(--text-main)] w-full">
+                          <span class="truncate pr-2 font-mono">${r.name}</span>
+                          <span class="text-[9px] text-[var(--text-dim)] shrink-0 px-1.5 py-0.5 rounded bg-[var(--bg-main)] border border-[var(--border)]">${r.private ? 'Private' : 'Public'}</span>
+                      </button>
+                  `).join('');
+              }
+              editorNotify(currentLang === 'cn' ? '仓库列表已更新' : 'Repo list updated');
+          } catch (e) { editorNotify("GitHub: " + e.message, 'error'); }
+      }
+      
+      function selectRepo(fullName, htmlUrl) {
+          document.getElementById('repoSelect').value = fullName;
+          const btn = document.getElementById('repoSelectBtn');
+          btn.textContent = fullName.split('/')[1] || fullName;
+          btn.title = fullName;
+          document.getElementById('ghRepoLinkBtn').dataset.url = htmlUrl;
+          toggleRepoPanel();
+      }
+      
+      function toggleRepoPanel() {
+          const panel = document.getElementById('repoPanel');
+          if(panel) {
+              panel.classList.toggle('hidden');
+          }
       }
       
       function updateRepoLink() {
-          const select = document.getElementById('repoSelect');
-          const opt = select.options[select.selectedIndex];
-          if (opt) {
-              document.getElementById('ghRepoLinkBtn').dataset.url = opt.dataset.url || "#";
-          } else {
-              document.getElementById('ghRepoLinkBtn').dataset.url = "#";
-          }
+          // Legacy support
       }
       
       function ghOpenRepo() {
@@ -1747,7 +1847,7 @@
       
       async function ghUpdateRepo() {
           const repo = document.getElementById('repoSelect').value;
-          if (!repo) return alert("Select a repo");
+          if (!repo) return editorNotify(currentLang === 'cn' ? "请先选择一个仓库" : "Select a repo", "error");
           try {
               let sha = "";
               try {
@@ -1763,13 +1863,13 @@
                       sha: sha
                   })
               });
-              alert("index.html synced successfully! 🌐"); addLog(`Synced: ${repo}`);
-          } catch (e) { alert("Sync Error: " + e.message); }
+              editorNotify(currentLang === 'cn' ? "代码已成功同步至 GitHub! 🌐" : "index.html synced successfully! 🌐"); addLog(`Synced: ${repo}`);
+          } catch (e) { editorNotify("Sync Error: " + e.message, 'error'); }
       }
       
       async function ghDownloadIndex() {
           const repo = document.getElementById('repoSelect').value;
-          if (!repo) return alert("Select a repo");
+          if (!repo) return editorNotify(currentLang === 'cn' ? "请先选择一个仓库" : "Select a repo", "error");
           try {
               const file = await ghFetch(`/repos/${repo}/contents/index.html`);
               codeArea.value = decodeURIComponent(escape(atob(file.content)));
@@ -1778,13 +1878,13 @@
               updateHighlight();
               updateLineNumbers();
               saveHistory();
-              alert("Repo content loaded to editor! ⤵️");
-          } catch (e) { alert("Load Error: " + e.message); }
+              editorNotify(currentLang === 'cn' ? "已拉取线上代码! ⤵️" : "Repo content loaded to editor! ⤵️");
+          } catch (e) { editorNotify("Load Error: " + e.message, 'error'); }
       }
       
       function ghOpenPages() {
           const repo = document.getElementById('repoSelect').value;
-          if (!repo) return alert("Select a repo");
+          if (!repo) return editorNotify(currentLang === 'cn' ? "请先选择一个仓库" : "Select a repo", "error");
           const [owner, name] = repo.split('/');
           window.open(`https://${owner}.github.io/${name}/`, '_blank');
       }
@@ -1834,7 +1934,7 @@
       
       async function ghDownloadToPC() {
           const repo = document.getElementById('repoSelect').value;
-          if (!repo) return alert("Select a repo");
+          if (!repo) return editorNotify(currentLang === 'cn' ? "请先选择一个仓库" : "Select a repo", "error");
           try {
               const file = await ghFetch(`/repos/${repo}/contents/index.html`);
               const content = decodeURIComponent(escape(atob(file.content)));
@@ -1843,15 +1943,15 @@
               a.href = URL.createObjectURL(blob);
               a.download = `index_${repo.replace('/','_')}.html`;
               a.click();
-          } catch (e) { alert("Download Error: " + e.message); }
+          } catch (e) { editorNotify("Download Error: " + e.message, "error"); }
       }
       
       async function ghCreateRepo() {
           const name = document.getElementById('newRepoName').value.trim();
-          if (!name) return alert(currentLang === 'cn' ? "请输入仓库名" : "Enter a repo name");
+          if (!name) return editorNotify(currentLang === 'cn' ? "请输入仓库名" : "Enter a repo name", "error");
           const msg = currentLang === 'cn' ? `确定要创建新仓库: ${name} 吗？` : `Create new repository: ${name}?`;
-          if (!confirm(msg)) return;
-          try {
+          editorConfirm(msg, async () => {
+              try {
               // 1. 创建仓库
               const repoData = await ghFetch('/user/repos', {
                   method: 'POST',
@@ -1884,12 +1984,14 @@
               await ghListRepos();
               addLog(`Created Repo: ${name}`);
               document.getElementById('repoSelect').value = fullName;
-              updateRepoLink();
+              document.getElementById('repoSelectBtn').textContent = name;
+              document.getElementById('ghRepoLinkBtn').dataset.url = `https://github.com/${fullName}`;
               
-              alert(currentLang === 'cn' ? 
-                  "🚀 新仓库已创建并自动开启 Pages 托管！请等待 1 分钟左右部署完成，即可点击 🌐 访问。" : 
-                  "🚀 New repo created and Pages enabled! Wait ~1 min for deployment, then click 🌐 to visit.");
-          } catch (e) { alert("Create Error: " + e.message); }
+              editorNotify(currentLang === 'cn' ? 
+                  "🚀 新仓库已创建！请等待部署完成后点击 🌐" : 
+                  "🚀 New repo created! Click 🌐 after deployment.");
+              } catch (e) { editorNotify("Create Error: " + e.message, 'error'); }
+          });
       }
       
       function addLog(msg, details = null) {
@@ -1931,12 +2033,14 @@
       
       async function ghDeleteRepo() {
           const repo = document.getElementById('repoSelect').value;
-          if (!repo) return;
+          if (!repo) return editorNotify(currentLang === 'cn' ? "请先选择一个仓库" : "Select a repo", "error");
           try {
               await ghFetch(`/repos/${repo}`, { method: 'DELETE' });
+              document.getElementById('repoSelect').value = "";
+              document.getElementById('repoSelectBtn').textContent = "Repos...";
               ghListRepos();
-              alert("Deleted. ​🚮");
-          } catch (e) { alert("Delete Error: " + e.message); }
+              editorNotify(currentLang === 'cn' ? '仓库已删除' : 'Deleted. ​🚮');
+          } catch (e) { editorNotify("Delete Error: " + e.message, 'error'); }
       }
       
       async function triggerImageUpload() {
@@ -1954,8 +2058,8 @@
           
           if (!token || !repo) {
               const msg = currentLang === 'cn' ? "请先在下方 GitHub 栏选择一个仓库并确保已填入 Token" : "Please select a GitHub repo and provide Token first";
-              alert(msg);
-              if (!repo) document.getElementById('repoSelect').focus();
+              editorNotify(msg, "error");
+              if (!repo && token) toggleRepoPanel();
               return;
           }
       
@@ -1989,23 +2093,27 @@
                   addLog("Image Bed Upload", { repo, file: fileName });
               };
           } catch (e) {
-              alert("Upload Failed: " + e.message);
+              editorNotify("Upload Failed: " + e.message, "error");
               aiStatus.textContent = "Upload Failed ❌";
           }
       }
       
       async function ghRenameRepo() {
           const repo = document.getElementById('repoSelect').value;
-          const newName = prompt("Enter new name:");
-          if (!repo || !newName) return;
-          try {
-              await ghFetch(`/repos/${repo}`, {
-                  method: 'PATCH',
-                  body: JSON.stringify({ name: newName })
-              });
-              ghListRepos();
-              alert("Renamed! ✏️");
-          } catch (e) { alert("Rename Error: " + e.message); }
+          if (!repo) return editorNotify(currentLang === 'cn' ? "请先选择一个仓库" : "Select a repo", "error");
+          editorPrompt(currentLang === 'cn' ? "请输入新名称:" : "Enter new name:", async (newName) => {
+              try {
+                  await ghFetch(`/repos/${repo}`, {
+                      method: 'PATCH',
+                      body: JSON.stringify({ name: newName })
+                  });
+                  ghListRepos();
+                  const shortName = newName.split('/').pop();
+                  document.getElementById('repoSelectBtn').textContent = shortName;
+                  document.getElementById('repoSelect').value = repo.split('/')[0] + '/' + shortName;
+                  editorNotify(currentLang === 'cn' ? "仓库重命名成功! ✏️" : "Renamed! ✏️");
+              } catch (e) { editorNotify("Rename Error: " + e.message, 'error'); }
+          });
       }
     </script>
     <!-- Bottom Corner Theme Triggers -->
