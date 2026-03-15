@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN"
 
   <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
           --bg-main: #161122;
           --bg-ui: #1e192c;
           --border: #352e46;
-          --text-main: #e2e8f0;
+          --text-main: #e2e8f0
           --text-dim: #94a3b8;
           --accent: #a78bfa;
           --caret: #ffffff;
@@ -88,6 +88,9 @@
       
       textarea#codeArea,
       #highlighting-content {
+          will-change: transform, contents;
+          contain: layout style;
+          backface-visibility: hidden;
           position: absolute;
           top: 0;
           left: 0;
@@ -1075,6 +1078,8 @@
       const searchInput = document.getElementById('searchInput');
       const quickBar = document.getElementById('quickBar');
       let currentLang = 'cn';
+      let renderPending = false;
+      let lastRenderTime = 0;
       
       // 根据当前语言和状态更新界面开关按钮的显示文本
       // 根据当前语言和状态更新界面开关按钮的显示文本
@@ -1196,10 +1201,24 @@
       // 触发 Prism.js 重新渲染代码高亮显示层
       // 刷新代码高亮：同步 Textarea 内容至 Prism 高亮层
       function updateHighlight() {
-          let text = codeArea.value;
-          if (text[text.length - 1] === "\n") text += " ";
-          highlightingCode.textContent = text;
-          Prism.highlightElement(highlightingCode);
+          if (renderPending) return;
+          renderPending = true;
+
+          requestAnimationFrame(() => {
+              const now = Date.now();
+              if (now - lastRenderTime < 16) {
+                  renderPending = false;
+                  return;
+              }
+
+              let text = codeArea.value;
+              if (text[text.length - 1] === "\n") text += " ";
+              highlightingCode.textContent = text;
+              Prism.highlightElement(highlightingCode);
+
+              lastRenderTime = now;
+              renderPending = false;
+          });
       }
       
       // --- 2. AI 核心逻辑 (Gemini 2.5) ---
@@ -1639,13 +1658,22 @@
           }
       });
       
+      let highlightTimeout;
       codeArea.addEventListener('input', () => {
-          updateHighlight();
+          // 1. 高优先级任务：同步行号并触发节流高亮
           updateLineNumbers();
-          localStorage.setItem('html_editor_ult_content', codeArea.value);
+          updateHighlight();
+
+          // 2. 低优先级重型任务：预览同步与本地持久化
+          clearTimeout(highlightTimeout);
+          highlightTimeout = setTimeout(() => {
+              updatePreview();
+              localStorage.setItem('html_editor_ult_content', codeArea.value);
+          }, 150);
+
+          // 3. 历史堆栈防抖
           clearTimeout(debounceTimer);
-          debounceTimer = setTimeout(saveHistory, 500);
-          updatePreview();
+          debounceTimer = setTimeout(saveHistory, 800);
       });
       
       // 执行编辑器撤销操作，回溯至上一个历史状态
